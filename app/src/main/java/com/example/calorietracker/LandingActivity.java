@@ -30,7 +30,7 @@ public class LandingActivity extends AppCompatActivity {
         if (userId!=-1) {
             User user = dao.getUserById(String.valueOf(userId));
             if(user!=null) {
-                welcomeText.setText("Welcome "+ user.getUsername());
+                welcomeText.setText("Welcome "+ user.getUsername()); //Display user name
             }
         }
         if(isAdmin) {
