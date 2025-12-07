@@ -50,7 +50,7 @@ public class LandingPage extends AppCompatActivity {
 
         updateComparison(caloriesConsumed, target);
 
-        //Set/Edit calorie target via pop-up from button
+        // Set/edit calorie target via pop-up from button
         Button editTargetButton = findViewById(R.id.editTarget);
         editTargetButton.setOnClickListener(v -> {
             EditText input = new EditText(LandingPage.this);
@@ -59,7 +59,7 @@ public class LandingPage extends AppCompatActivity {
                     .setTitle("Set Calorie Target")
                     .setMessage("Enter your daily calorie target")
                     .setView(input)
-                    .setPositiveButton("OK", (dialog, which) -> {
+                    .setPositiveButton("Set", (dialog, which) -> {
                         String targetStr = input.getText().toString().trim();
                         if (!targetStr.isEmpty()) {
                             try {
