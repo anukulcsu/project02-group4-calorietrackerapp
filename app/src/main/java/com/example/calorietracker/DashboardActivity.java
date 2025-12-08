@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
-public class LandingPage extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity {
 
     private ActivityResultLauncher<Intent> addItemLauncher;
     private ListView foodListView;
@@ -32,7 +32,7 @@ public class LandingPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.landing_page);
+        setContentView(R.layout.activity_dashboard);
 
         // Create list of foods
         foodListView = findViewById(R.id.foodList);
@@ -44,7 +44,7 @@ public class LandingPage extends AppCompatActivity {
         foodListView.setOnItemClickListener((parent, view, position, id) -> {
         String selectedItem = foods.get(position);
         String selectedItemName = selectedItem.substring(0, selectedItem.indexOf(":"));
-        new AlertDialog.Builder(LandingPage.this)
+        new AlertDialog.Builder(DashboardActivity.this)
                 .setTitle("Remove Item")
                 .setMessage("Would you like to remove " + selectedItemName + "?")
                 .setPositiveButton("Yes", (dialog, which) -> {
@@ -76,9 +76,9 @@ public class LandingPage extends AppCompatActivity {
         // Set/edit calorie target via pop-up from button
         Button editTargetButton = findViewById(R.id.editTarget);
         editTargetButton.setOnClickListener(v -> {
-            EditText input = new EditText(LandingPage.this);
+            EditText input = new EditText(DashboardActivity.this);
             input.setInputType(InputType.TYPE_CLASS_NUMBER);
-            new AlertDialog.Builder(LandingPage.this)
+            new AlertDialog.Builder(DashboardActivity.this)
                     .setTitle("Set Calorie Target")
                     .setMessage("Enter your daily calorie target")
                     .setView(input)
@@ -91,7 +91,7 @@ public class LandingPage extends AppCompatActivity {
                                 int calConsumed = Integer.parseInt(calorieCountView.getText().toString());
                                 updateComparison(calConsumed);
                             } catch (NumberFormatException e) {
-                                Toast.makeText(LandingPage.this, "Enter valid value", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DashboardActivity.this, "Enter valid value", Toast.LENGTH_SHORT).show();
                             }
                         }
                     })
@@ -124,7 +124,7 @@ public class LandingPage extends AppCompatActivity {
         // Launches add item activity when add item button is pressed
         Button addItemButton = findViewById(R.id.addItem);
         addItemButton.setOnClickListener(v -> {
-            Intent intent = new Intent(LandingPage.this, AddItemActivity.class);
+            Intent intent = new Intent(DashboardActivity.this, AddItemActivity.class);
             addItemLauncher.launch(intent);
         });
 

@@ -19,7 +19,7 @@ public class AddItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_food);
+        setContentView(R.layout.activity_add_item);
 
         itemNameInput = findViewById(R.id.itemNameInput);
         numCaloriesInput = findViewById(R.id.numCaloriesInput);
