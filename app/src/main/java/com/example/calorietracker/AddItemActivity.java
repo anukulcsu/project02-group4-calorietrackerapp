@@ -48,9 +48,20 @@ public class AddItemActivity extends AppCompatActivity {
                         Toast.makeText(this, "Invalid time format!", Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    if (name.length() > 25) { // Prevents extra long words breaking the formatting
+                        Toast.makeText(this, "Name character limit is 25!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     try {
-                        // Send user-specified item attributes to main page
                         int calories = Integer.parseInt(caloriesStr);
+                        if (calories > 3000) { // Prevents large numbers from breaking the formatting
+                            Toast.makeText(this, "Calorie limit for one entry is 3000!", Toast.LENGTH_SHORT).show();
+                            return;
+                        } else if (calories <= 0) {
+                            Toast.makeText(this, "Entries cannot be 0 calories!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        // Send user-specified item attributes to main page
                         Intent resultIntent = new Intent();
                         resultIntent.putExtra("foodName", name);
                         resultIntent.putExtra("calories", calories);
