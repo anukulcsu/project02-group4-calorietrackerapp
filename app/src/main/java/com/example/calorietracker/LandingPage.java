@@ -2,6 +2,7 @@ package com.example.calorietracker;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.widget.ArrayAdapter;
@@ -21,6 +22,8 @@ public class LandingPage extends AppCompatActivity {
     private TextView calorieCountView;
     private TextView targetDisplayView;
     private TextView comparisonView;
+    private ArrayList<String> foods;
+    private ArrayAdapter<String> adapter;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -28,16 +31,16 @@ public class LandingPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.landing_page);
 
-        //List of foods
+        // Create list of foods
         foodListView = findViewById(R.id.foodList);
-        ArrayList<String> foods = new ArrayList<>();
+        foods = new ArrayList<>();
         //Placeholder foods
         foods.add("Apple");
         foods.add("Pancakes");
         foods.add("Orange juice");
         foods.add("Potato chips");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foods);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foods);
         foodListView.setAdapter(adapter);
 
         //Compare calories consumed to target
@@ -46,9 +49,8 @@ public class LandingPage extends AppCompatActivity {
         comparisonView = findViewById(R.id.comparison);
 
         int caloriesConsumed = Integer.parseInt(calorieCountView.getText().toString());
-        int target = Integer.parseInt(targetDisplayView.getText().toString());
 
-        updateComparison(caloriesConsumed, target);
+        updateComparison(caloriesConsumed);
 
         // Set/edit calorie target via pop-up from button
         Button editTargetButton = findViewById(R.id.editTarget);
@@ -66,7 +68,7 @@ public class LandingPage extends AppCompatActivity {
                                 int targetInt = Integer.parseInt(targetStr);
                                 targetDisplayView.setText(String.valueOf(targetInt));
                                 int calConsumed = Integer.parseInt(calorieCountView.getText().toString());
-                                updateComparison(calConsumed, targetInt);
+                                updateComparison(calConsumed);
                             } catch (NumberFormatException e) {
                                 Toast.makeText(LandingPage.this, "Enter valid value", Toast.LENGTH_SHORT).show();
                             }
@@ -75,9 +77,39 @@ public class LandingPage extends AppCompatActivity {
                     .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).show();
         });
 
+        // Navigate to add item page when "Add Item" is clicked
+        Button addItemButton = findViewById(R.id.addItem);
+        addItemButton.setOnClickListener(v -> {
+            Intent intent = new Intent(LandingPage.this, AddItemActivity.class);
+            startActivityForResult(intent, 1);
+        });
+
     }
 
-    private void updateComparison(int calories, int target) {
+    @SuppressLint("MissingSuperCall")
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        // Adds items from add item page to list
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            String foodName = data.getStringExtra("foodName");
+            int calories = data.getIntExtra("calories", 0);
+            String time = data.getStringExtra("time");
+
+            String entry = foodName + ": " + calories + " calories, " + time;
+            foods.add(entry);
+            adapter.notifyDataSetChanged();
+
+            int prevTotal = Integer.parseInt(calorieCountView.getText().toString().trim());
+            int newTotal = prevTotal + calories;
+            calorieCountView.setText(String.valueOf(newTotal));
+
+            updateComparison(newTotal);
+        }
+    }
+
+    private void updateComparison(int calories) {
+        int target = Integer.parseInt(targetDisplayView.getText().toString());
         if (calories < target) {
             comparisonView.setText("<");
         } else if (calories > target) {
