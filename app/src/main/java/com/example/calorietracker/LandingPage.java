@@ -33,17 +33,11 @@ public class LandingPage extends AppCompatActivity {
 
         // Create list of foods
         foodListView = findViewById(R.id.foodList);
-        foods = new ArrayList<>();
-        //Placeholder foods
-        foods.add("Apple");
-        foods.add("Pancakes");
-        foods.add("Orange juice");
-        foods.add("Potato chips");
-
+        foods = new ArrayList<>(); // Empty by default, items will be supplied by the user
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foods);
         foodListView.setAdapter(adapter);
 
-        //Compare calories consumed to target
+        // Compare calories consumed to target
         calorieCountView = findViewById(R.id.calorieCount);
         targetDisplayView = findViewById(R.id.targetDisplay);
         comparisonView = findViewById(R.id.comparison);
@@ -86,9 +80,9 @@ public class LandingPage extends AppCompatActivity {
 
     }
 
-    @SuppressLint("MissingSuperCall")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
         // Adds items from add item page to list
         if (requestCode == 1 && resultCode == RESULT_OK) {
