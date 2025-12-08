@@ -40,6 +40,30 @@ public class LandingPage extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foods);
         foodListView.setAdapter(adapter);
 
+        // Remove list entries by tapping them
+        foodListView.setOnItemClickListener((parent, view, position, id) -> {
+        String selectedItem = foods.get(position);
+        String selectedItemName = selectedItem.substring(0, selectedItem.indexOf(":"));
+        new AlertDialog.Builder(LandingPage.this)
+                .setTitle("Remove Item")
+                .setMessage("Would you like to remove " + selectedItemName + "?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    int caloriesRemoved = retrieveCalories(selectedItem);
+                    if (caloriesRemoved != -1) {
+                        foods.remove(position);
+                        adapter.notifyDataSetChanged();
+                        int prevTotal = Integer.parseInt(calorieCountView.getText().toString().trim());
+                        int newTotal = prevTotal - caloriesRemoved;
+                        calorieCountView.setText(String.valueOf(newTotal));
+                        updateComparison(newTotal);
+                    } else {
+                        Toast.makeText(this, "Error removing item!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
+        });
+
         // Compare calories consumed to target
         calorieCountView = findViewById(R.id.calorieCount);
         targetDisplayView = findViewById(R.id.targetDisplay);
@@ -106,6 +130,7 @@ public class LandingPage extends AppCompatActivity {
 
     }
 
+    // Compares calories consumed to target and updates summary
     private void updateComparison(int calories) {
         int target = Integer.parseInt(targetDisplayView.getText().toString());
         if (calories < target) {
@@ -114,6 +139,18 @@ public class LandingPage extends AppCompatActivity {
             comparisonView.setText(">");
         } else {
             comparisonView.setText("=");
+        }
+    }
+
+    // Gets calories from list entry for updating total calories upon entry removal
+    private int retrieveCalories(String entry) {
+        try {
+            int start = entry.indexOf(":") + 2;
+            int end = entry.indexOf(" cal");
+            String caloriesStr = entry.substring(start, end).trim();
+            return Integer.parseInt(caloriesStr);
+        } catch (Exception e) {
+            return -1;
         }
     }
 
