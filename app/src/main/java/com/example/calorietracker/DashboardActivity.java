@@ -87,6 +87,10 @@ public class DashboardActivity extends AppCompatActivity {
                         if (!targetStr.isEmpty()) {
                             try {
                                 int targetInt = Integer.parseInt(targetStr);
+                                if (targetInt > 99999) {
+                                    Toast.makeText(DashboardActivity.this, "Limit is 99999!", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
                                 targetDisplayView.setText(String.valueOf(targetInt));
                                 int calConsumed = Integer.parseInt(calorieCountView.getText().toString());
                                 updateComparison(calConsumed);
