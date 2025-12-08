@@ -30,20 +30,38 @@ public class AddItemActivity extends AppCompatActivity {
         addButton.setOnClickListener(v -> {
             String name = itemNameInput.getText().toString().trim();
             String caloriesStr = numCaloriesInput.getText().toString().trim();
-            String time = timeInput.getText().toString().trim();
+            String time = timeInput.getText().toString().toLowerCase().trim();
 
-            // Send user-specified item attributes to main page
+            // Validate user input
             if (!name.isEmpty() && !caloriesStr.isEmpty() && !time.isEmpty()) {
-                try {
-                    int calories = Integer.parseInt(caloriesStr);
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra("foodName", name);
-                    resultIntent.putExtra("calories", calories);
-                    resultIntent.putExtra("time", time);
-                    setResult(RESULT_OK, resultIntent);
-                    finish();
-                } catch (NumberFormatException e) {
-                    Toast.makeText(this, "Invalid input for calories!", Toast.LENGTH_SHORT).show();
+                // Validate time, must be in 12hr format, HH:MMam/pm
+                if (time.charAt(2) == ':' && time.length() == 7 && time.charAt(6) == 'm' && (time.charAt(5) == 'a' || time.charAt(5) == 'p')) {
+                    // Ensure hours and minutes are numbers and valid values
+                    try {
+                        int hour = Integer.parseInt(time.substring(0, 2));
+                        int minutes = Integer.parseInt(time.substring(3, 5));
+                        if (hour > 12 || minutes > 59) {
+                            Toast.makeText(this, "Invalid time format!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    } catch (NumberFormatException e) {
+                        Toast.makeText(this, "Invalid time format!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    try {
+                        // Send user-specified item attributes to main page
+                        int calories = Integer.parseInt(caloriesStr);
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra("foodName", name);
+                        resultIntent.putExtra("calories", calories);
+                        resultIntent.putExtra("time", time);
+                        setResult(RESULT_OK, resultIntent);
+                        finish();
+                    } catch (NumberFormatException e) {
+                        Toast.makeText(this, "Invalid input for calories!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "Invalid time format!", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Toast.makeText(this, "All fields are required!", Toast.LENGTH_SHORT).show();
