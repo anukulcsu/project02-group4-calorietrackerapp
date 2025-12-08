@@ -12,12 +12,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
 public class LandingPage extends AppCompatActivity {
 
+    private ActivityResultLauncher<Intent> addItemLauncher;
     private ListView foodListView;
     private TextView calorieCountView;
     private TextView targetDisplayView;
@@ -71,35 +74,36 @@ public class LandingPage extends AppCompatActivity {
                     .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).show();
         });
 
-        // Navigate to add item page when "Add Item" is clicked
+        // Handles user-specified item properties from add item activity
+        addItemLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Intent data = result.getData();
+                        String foodName = data.getStringExtra("foodName");
+                        int calories = data.getIntExtra("calories", 0);
+                        String time = data.getStringExtra("time");
+
+                        String entry = foodName + ": " + calories + " cal, " + time;
+                        foods.add(entry);
+                        adapter.notifyDataSetChanged();
+
+                        int prevTotal = Integer.parseInt(calorieCountView.getText().toString().trim());
+                        int newTotal = prevTotal + calories;
+                        calorieCountView.setText(String.valueOf(newTotal));
+
+                        updateComparison(newTotal);
+                    }
+                }
+        );
+
+        // Launches add item activity when add item button is pressed
         Button addItemButton = findViewById(R.id.addItem);
         addItemButton.setOnClickListener(v -> {
             Intent intent = new Intent(LandingPage.this, AddItemActivity.class);
-            startActivityForResult(intent, 1);
+            addItemLauncher.launch(intent);
         });
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Adds items from add item page to list
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            String foodName = data.getStringExtra("foodName");
-            int calories = data.getIntExtra("calories", 0);
-            String time = data.getStringExtra("time");
-
-            String entry = foodName + ": " + calories + " calories, " + time;
-            foods.add(entry);
-            adapter.notifyDataSetChanged();
-
-            int prevTotal = Integer.parseInt(calorieCountView.getText().toString().trim());
-            int newTotal = prevTotal + calories;
-            calorieCountView.setText(String.valueOf(newTotal));
-
-            updateComparison(newTotal);
-        }
     }
 
     private void updateComparison(int calories) {

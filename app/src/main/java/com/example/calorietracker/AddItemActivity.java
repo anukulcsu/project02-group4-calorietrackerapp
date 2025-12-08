@@ -57,7 +57,7 @@ public class AddItemActivity extends AppCompatActivity {
                         if (calories > 3000) { // Prevents large numbers from breaking the formatting
                             Toast.makeText(this, "Calorie limit for one entry is 3000!", Toast.LENGTH_SHORT).show();
                             return;
-                        } else if (calories <= 0) {
+                        } else if (calories <= 0) { // Prevents excess entries that do not affect the total
                             Toast.makeText(this, "Entries cannot be 0 calories!", Toast.LENGTH_SHORT).show();
                             return;
                         }
