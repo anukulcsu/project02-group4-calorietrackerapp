@@ -114,11 +114,13 @@
         android:layout_height="wrap_content"
         android:padding="3dp">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/editTarget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Edit"
+            android:background="#1D49A7"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -137,20 +139,24 @@
         android:layout_height="wrap_content"
         android:padding="3dp">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/addItem"
             android:layout_width="200dp"
             android:layout_height="match_parent"
             android:text="Add Item"
+            android:background="#1D49A7"
+            android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/viewHistory"
             android:layout_width="200dp"
             android:layout_height="match_parent"
             android:text="History"
+            android:background="#1D49A7"
+            android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
