@@ -1,5 +1,6 @@
 package com.example.calorietracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,9 +32,16 @@ public class AddItemActivity extends AppCompatActivity {
             String caloriesStr = numCaloriesInput.getText().toString().trim();
             String time = timeInput.getText().toString().trim();
 
+            // Send user-specified item attributes to main page
             if (!name.isEmpty() && !caloriesStr.isEmpty() && !time.isEmpty()) {
                 try {
                     int calories = Integer.parseInt(caloriesStr);
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("foodName", name);
+                    resultIntent.putExtra("calories", calories);
+                    resultIntent.putExtra("time", time);
+                    setResult(RESULT_OK, resultIntent);
+                    finish();
                 } catch (NumberFormatException e) {
                     Toast.makeText(this, "Invalid input for calories!", Toast.LENGTH_SHORT).show();
                 }
