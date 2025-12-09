@@ -23,14 +23,15 @@
         </activity>
 
         <!-- Your other screens -->
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".HistoryActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".LandingActivity" />
+        <activity android:name=".LoginActivity"/>
+        <activity android:name=".HistoryActivity"/>
+        <activity android:name=".SignUpActivity"/>
+        <activity android:name=".LandingActivity"/>
 
         <!-- Add these if you created them -->
-        <activity android:name=".DashboardActivity" />
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".DashboardActivity"/>
+        <activity android:name=".SettingsActivity"/>
+        <activity android:name=".AdminPanelActivity"/>
 
     </application>
 
