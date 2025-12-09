@@ -4,10 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * Unit tests for the "tips" feature.
- * These tests check that our tips text contains the key ideas
- * we want to show the user.
+
  */
 public class TipsFeatureTest {
 
