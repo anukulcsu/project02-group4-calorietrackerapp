@@ -18,6 +18,7 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     TextView signupLink;
     UserDAO dao;
+    //login page
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
