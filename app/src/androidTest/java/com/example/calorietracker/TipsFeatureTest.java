@@ -2,7 +2,6 @@ package com.example.calorietracker;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 public class TipsFeatureTest {
-
     private String getTipsText() {
         return "• Under your daily limit = calorie deficit (helps with weight loss).\n\n" +
                 "• Over your daily limit = calorie surplus (can lead to weight gain).\n\n" +
