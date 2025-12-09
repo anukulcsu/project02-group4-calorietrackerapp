@@ -167,6 +167,20 @@ public class DashboardActivity extends AppCompatActivity {
                     .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).show();
         });
 
+        TextView loggedInUser = findViewById(R.id.userLoggedIn);
+        loggedInUser.setOnClickListener(v -> {
+            new AlertDialog.Builder(DashboardActivity.this)
+                    .setTitle("Sign Out")
+                    .setMessage("Do you want to sign out and return to login?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                    .show();
+        });
+
+
     }
 
     // Compares calories consumed to target and updates summary
