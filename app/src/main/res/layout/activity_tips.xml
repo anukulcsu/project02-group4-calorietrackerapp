@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="24dp">
-
     <TextView
         android:id="@+id/textTipsTitle"
         android:layout_width="wrap_content"
