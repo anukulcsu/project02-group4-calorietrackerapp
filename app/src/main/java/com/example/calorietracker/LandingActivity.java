@@ -16,6 +16,7 @@ public class LandingActivity extends AppCompatActivity {
     Button adminButton;
     Button logoutButton;
     UserDAO dao;
+    //landing page
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +42,7 @@ public class LandingActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor editor = preferences.edit(); //shared pref
+                SharedPreferences.Editor editor = preferences.edit();
                 editor.clear();
                 editor.apply();
                 Intent intent = new Intent(LandingActivity.this, MainActivity.class);
