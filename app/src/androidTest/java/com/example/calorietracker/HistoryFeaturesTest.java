@@ -17,7 +17,6 @@ public class HistoryFeaturesTest {
         String status = calculateStatus(1500, 2000);
         assertEquals("Under", status);
     }
-
     @Test
     public void status_isMet_whenTotalEqualsLimit() {
         String status = calculateStatus(2000, 2000);
