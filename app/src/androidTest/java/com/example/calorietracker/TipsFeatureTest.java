@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 
- */
+
 public class TipsFeatureTest {
 
     // This should match the main ideas from TipsActivity's textTipsBody.
