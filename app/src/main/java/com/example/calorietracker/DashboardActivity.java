@@ -27,12 +27,15 @@ public class DashboardActivity extends AppCompatActivity {
     private TextView comparisonView;
     private ArrayList<String> foods;
     private ArrayAdapter<String> adapter;
+    public ArrayList<String[]> history;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        history = new ArrayList<>();
 
         // Create list of foods
         foodListView = findViewById(R.id.foodList);
@@ -130,6 +133,32 @@ public class DashboardActivity extends AppCompatActivity {
         addItemButton.setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, AddItemActivity.class);
             addItemLauncher.launch(intent);
+        });
+
+        // Saves user-specified date, target calories, and calories consumed to history ArrayList for retrieval
+        Button logCaloriesButton = findViewById(R.id.logCalories);
+        logCaloriesButton.setOnClickListener(v -> {
+            EditText input = new EditText(DashboardActivity.this);
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            new AlertDialog.Builder(DashboardActivity.this)
+                    .setTitle("Log Today's Calories and Target")
+                    .setMessage("Enter the date")
+                    .setView(input)
+                    .setPositiveButton("Log & Reset", (dialog, which) -> {
+                        String date = input.getText().toString().trim();
+                        if (!date.isEmpty()) {
+                            // Date, target, calories consumed
+                            String[] historyEntry = new String[]{date, targetDisplayView.getText().toString(), calorieCountView.getText().toString()};
+                            history.add(historyEntry);
+                            foods.clear(); // Clear logged foods
+                            adapter.notifyDataSetChanged();
+                            calorieCountView.setText("0");
+                            int newCalories = Integer.parseInt(calorieCountView.getText().toString());
+                            updateComparison(newCalories);
+                            Toast.makeText(DashboardActivity.this, "Success!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).show();
         });
 
     }
