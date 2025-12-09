@@ -21,7 +21,6 @@ public class TipsFeatureTest {
         String tips = getTipsText();
         assertTrue(tips.contains("Over your daily limit"));
     }
-
     @Test
     public void tipsEncourageLoggingFood() {
         String tips = getTipsText();
