@@ -12,6 +12,7 @@ import androidx.room.Room;
 import com.example.calorietracker.database.AppDatabase;
 import com.example.calorietracker.database.User;
 import com.example.calorietracker.database.UserAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 public class AdminPanelActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    Button btnAddUser;
+    FloatingActionButton btnAddUser;
     List<User> userList;
     UserAdapter adapter;
     AppDatabase db;
@@ -29,8 +30,6 @@ public class AdminPanelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_panel);
 
-        // 1. Initialize Room Database
-        // MAKE SURE "calorietracker_db" matches the name in your AppDatabase class or LoginActivity!
         db = Room.databaseBuilder(getApplicationContext(),
                         AppDatabase.class, "CT_database")
                 .allowMainThreadQueries()
@@ -38,26 +37,23 @@ public class AdminPanelActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         btnAddUser = findViewById(R.id.btnAddUser);
+
         userList = new ArrayList<>();
-
-        // 2. Load Data
         loadUsers();
-
-        // 3. Add User Button
         btnAddUser.setOnClickListener(v -> showAddUserDialog());
     }
 
     private void loadUsers() {
+
         userList = db.getUserDAO().getAllUsers();
+
         adapter = new UserAdapter(this, userList, db);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
-
     private void showAddUserDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add New User");
-
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(50, 40, 50, 10);
@@ -69,23 +65,19 @@ public class AdminPanelActivity extends AppCompatActivity {
         final EditText inputPass = new EditText(this);
         inputPass.setHint("Password");
         layout.addView(inputPass);
-
         builder.setView(layout);
-
         builder.setPositiveButton("Create", (dialog, which) -> {
-            String uName = inputUser.getText().toString();
-            String uPass = inputPass.getText().toString();
+            String Name = inputUser.getText().toString();
+            String Pass = inputPass.getText().toString();
 
-            if (!uName.isEmpty() && !uPass.isEmpty()) {
+            if (!Name.isEmpty() && !Pass.isEmpty()) {
                 User newUser = new User();
-                newUser.username = uName;
-                newUser.password = uPass;
-                // Add any other required fields here if your User class has them (e.g. email)
-
+                newUser.username = Name;
+                newUser.password = Pass;
+                newUser.isAdmin = false;
                 db.getUserDAO().insert(newUser);
-
                 Toast.makeText(this, "User Added", Toast.LENGTH_SHORT).show();
-                loadUsers(); // Refresh the list
+                loadUsers();
             } else {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             }
