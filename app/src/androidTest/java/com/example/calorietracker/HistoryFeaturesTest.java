@@ -6,7 +6,6 @@ import static org.junit.Assert.assertEquals;
 
 
 public class HistoryFeaturesTest {
-
     private String calculateStatus(int totalCalories, int limit) {
         if (totalCalories < limit) {
             return "Under";
