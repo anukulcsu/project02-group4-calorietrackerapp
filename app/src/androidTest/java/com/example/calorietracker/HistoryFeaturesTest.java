@@ -12,7 +12,6 @@ public class HistoryFeaturesTest {
             return "Over";
         }
     }
-
     @Test
     public void status_isUnder_whenTotalLessThanLimit() {
         String status = calculateStatus(1500, 2000);
