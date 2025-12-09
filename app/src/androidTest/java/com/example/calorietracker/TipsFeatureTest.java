@@ -11,7 +11,6 @@ public class TipsFeatureTest {
                 "• Logging food regularly helps you see patterns in your eating.\n\n" +
                 "• Use the app's Under / Met / Over status to guide your next meal.";
     }
-
     @Test
     public void tipsMentionUnderDailyLimit() {
         String tips = getTipsText();
