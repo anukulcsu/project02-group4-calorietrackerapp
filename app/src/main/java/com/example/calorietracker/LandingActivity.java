@@ -41,7 +41,7 @@ public class LandingActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor editor = preferences.edit();
+                SharedPreferences.Editor editor = preferences.edit(); //shared pref
                 editor.clear();
                 editor.apply();
                 Intent intent = new Intent(LandingActivity.this, MainActivity.class);
