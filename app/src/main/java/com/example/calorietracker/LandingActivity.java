@@ -16,6 +16,7 @@ public class LandingActivity extends AppCompatActivity {
     Button adminButton;
     Button logoutButton;
     UserDAO dao;
+    //landing page
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
