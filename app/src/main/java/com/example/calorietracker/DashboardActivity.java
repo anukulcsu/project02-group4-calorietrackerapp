@@ -2,7 +2,9 @@ package com.example.calorietracker;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.widget.ArrayAdapter;
@@ -15,6 +17,10 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.calorietracker.database.AppDatabase;
+import com.example.calorietracker.database.User;
+import com.example.calorietracker.database.UserDAO;
 
 import java.util.ArrayList;
 
@@ -168,6 +174,17 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         TextView loggedInUser = findViewById(R.id.userLoggedIn);
+        // Display username of user currently logged in
+        SharedPreferences preferences = getSharedPreferences("PROJECT2_PREFS", Context.MODE_PRIVATE);
+        int userId = preferences.getInt("USER_ID", -1);
+        if (userId != -1) {
+            UserDAO dao = AppDatabase.getInstance(this).getUserDAO();
+            User user = dao.getUserById(String.valueOf(userId));
+            if (user != null) {
+                loggedInUser.setText("Logged in as: " + user.getUsername());
+            }
+        }
+        // Allow user to sign out by clicking their username
         loggedInUser.setOnClickListener(v -> {
             new AlertDialog.Builder(DashboardActivity.this)
                     .setTitle("Sign Out")

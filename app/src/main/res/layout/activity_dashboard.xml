@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:padding="12dp"
-        android:text="Logged in as: testuser1"
+        android:text="Logged in as: USERNAME"
         android:textSize="16sp"
         tools:ignore="RtlHardcoded" />
 
