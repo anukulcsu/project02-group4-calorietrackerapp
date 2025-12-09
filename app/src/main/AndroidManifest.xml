@@ -27,6 +27,8 @@
         <activity android:name=".HistoryActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".LandingActivity" />
+        <activity android:name=".TipsActivity" />
+
 
         <!-- Add these if you created them -->
         <activity android:name=".DashboardActivity" />
