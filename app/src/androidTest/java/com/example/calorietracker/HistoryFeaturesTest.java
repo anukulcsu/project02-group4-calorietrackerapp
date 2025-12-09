@@ -1,6 +1,7 @@
 package com.example.calorietracker;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+
 public class HistoryFeaturesTest {
     private String calculateStatus(int totalCalories) {
         if (totalCalories < 2000) {
