@@ -141,21 +141,27 @@ public class DashboardActivity extends AppCompatActivity {
             EditText input = new EditText(DashboardActivity.this);
             input.setInputType(InputType.TYPE_CLASS_TEXT);
             new AlertDialog.Builder(DashboardActivity.this)
-                    .setTitle("Log Today's Calories and Target")
-                    .setMessage("Enter the date")
+                    .setTitle("Log Today's Calories and Target\nThis will CLEAR your items!")
+                    .setMessage("Enter the date:")
                     .setView(input)
                     .setPositiveButton("Log & Reset", (dialog, which) -> {
                         String date = input.getText().toString().trim();
                         if (!date.isEmpty()) {
-                            // Date, target, calories consumed
-                            String[] historyEntry = new String[]{date, targetDisplayView.getText().toString(), calorieCountView.getText().toString()};
-                            history.add(historyEntry);
-                            foods.clear(); // Clear logged foods
-                            adapter.notifyDataSetChanged();
-                            calorieCountView.setText("0");
-                            int newCalories = Integer.parseInt(calorieCountView.getText().toString());
-                            updateComparison(newCalories);
-                            Toast.makeText(DashboardActivity.this, "Success!", Toast.LENGTH_SHORT).show();
+                            if (date.length() < 5 || date.length() > 10) { // Validate date input
+                                Toast.makeText(DashboardActivity.this, "Invalid date!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Date, target, calories consumed
+                                String[] historyEntry = new String[]{date, targetDisplayView.getText().toString(), calorieCountView.getText().toString()};
+                                history.add(historyEntry);
+                                foods.clear(); // Clear logged foods
+                                adapter.notifyDataSetChanged();
+                                calorieCountView.setText("0"); // Reset calorie count
+                                int newCalories = Integer.parseInt(calorieCountView.getText().toString());
+                                updateComparison(newCalories);
+                                Toast.makeText(DashboardActivity.this, "Success!", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(DashboardActivity.this, "Date is a required field!", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).show();
