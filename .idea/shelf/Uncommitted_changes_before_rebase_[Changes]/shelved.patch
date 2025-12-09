@@ -1,0 +1,100 @@
+Index: app/src/main/res/layout/activity_area_panel.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\">\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+===================================================================
+diff --git a/app/src/main/res/layout/activity_area_panel.xml b/app/src/main/res/layout/activity_area_panel.xml
+--- a/app/src/main/res/layout/activity_area_panel.xml	(revision a78c4eb3ad3198ea63141a29542235e986994bf6)
++++ b/app/src/main/res/layout/activity_area_panel.xml	(date 1765269595827)
+@@ -1,6 +1,39 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:layout_width="match_parent"
+-    android:layout_height="match_parent">
++    android:layout_height="match_parent"
++    android:padding="16dp">
++
++    <TextView
++        android:id="@+id/tvHeader"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="Admin Dashboard"
++        android:textSize="24sp"
++        android:textStyle="bold"
++        app:layout_constraintTop_toTopOf="parent"
++        app:layout_constraintStart_toStartOf="parent"/>
++
++    <androidx.recyclerview.widget.RecyclerView
++        android:id="@+id/recyclerView"
++        android:layout_width="match_parent"
++        android:layout_height="0dp"
++        android:layout_marginTop="16dp"
++        android:layout_marginBottom="16dp"
++        app:layout_constraintTop_toBottomOf="@id/tvHeader"
++        app:layout_constraintBottom_toTopOf="@id/btnAddUser"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintEnd_toEndOf="parent"/>
++
++    <Button
++        android:id="@+id/btnAddUser"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:text="+ Add New User"
++        android:backgroundTint="#3F51B5"
++        app:layout_constraintBottom_toBottomOf="parent"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintEnd_toEndOf="parent"/>
+ 
+ </androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/example/calorietracker/AdminAreaActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.calorietracker;\r\n\r\nimport android.os.Bundle;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.LinearLayout;\r\nimport android.widget.Toast;\r\nimport androidx.appcompat.app.AlertDialog;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\nimport androidx.room.Room;\r\nimport com.example.calorietracker.database.AppDatabase;\r\nimport com.example.calorietracker.database.User;\r\nimport com.example.calorietracker.database.UserAdapter;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class AdminPanelActivity extends AppCompatActivity {\r\n\r\n    RecyclerView recyclerView;\r\n    Button btnAddUser;\r\n    List<User> userList;\r\n    UserAdapter adapter;\r\n    AppDatabase db;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_area_panel);\r\n\r\n        // 1. Initialize Room Database\r\n        // MAKE SURE \"calorietracker_db\" matches the name in your AppDatabase class or LoginActivity!\r\n        db = Room.databaseBuilder(getApplicationContext(),\r\n                        AppDatabase.class, \"CT_database\")\r\n                .allowMainThreadQueries()\r\n                .build();\r\n\r\n        recyclerView = findViewById(R.id.recyclerView);\r\n        btnAddUser = findViewById(R.id.btnAddUser);\r\n        userList = new ArrayList<>();\r\n\r\n        // 2. Load Data\r\n        loadUsers();\r\n\r\n        // 3. Add User Button\r\n        btnAddUser.setOnClickListener(v -> showAddUserDialog());\r\n    }\r\n\r\n    private void loadUsers() {\r\n        userList = db.getUserDAO().getAllUsers();\r\n        adapter = new UserAdapter(this, userList, db);\r\n        recyclerView.setAdapter(adapter);\r\n        recyclerView.setLayoutManager(new LinearLayoutManager(this));\r\n    }\r\n\r\n    private void showAddUserDialog() {\r\n        AlertDialog.Builder builder = new AlertDialog.Builder(this);\r\n        builder.setTitle(\"Add New User\");\r\n\r\n        LinearLayout layout = new LinearLayout(this);\r\n        layout.setOrientation(LinearLayout.VERTICAL);\r\n        layout.setPadding(50, 40, 50, 10);\r\n\r\n        final EditText inputUser = new EditText(this);\r\n        inputUser.setHint(\"Username\");\r\n        layout.addView(inputUser);\r\n\r\n        final EditText inputPass = new EditText(this);\r\n        inputPass.setHint(\"Password\");\r\n        layout.addView(inputPass);\r\n        builder.setView(layout);\r\n        builder.setPositiveButton(\"Create\", (dialog, which) -> {\r\n            String Name = inputUser.getText().toString();\r\n            String Pass = inputPass.getText().toString();\r\n\r\n            if (!Name.isEmpty() && !Pass.isEmpty()) {\r\n                User newUser = new User();\r\n                newUser.username = Name;\r\n                newUser.password = Pass;\r\n                db.getUserDAO().insert(newUser);\r\n                Toast.makeText(this, \"User Added\", Toast.LENGTH_SHORT).show();\r\n                loadUsers();\r\n            } else {\r\n                Toast.makeText(this, \"Please fill all fields\", Toast.LENGTH_SHORT).show();\r\n            }\r\n        });\r\n        builder.setNegativeButton(\"Cancel\", null);\r\n        builder.show();\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/app/src/main/java/com/example/calorietracker/AdminAreaActivity.java b/app/src/main/java/com/example/calorietracker/AdminAreaActivity.java
+--- a/app/src/main/java/com/example/calorietracker/AdminAreaActivity.java	(revision a78c4eb3ad3198ea63141a29542235e986994bf6)
++++ b/app/src/main/java/com/example/calorietracker/AdminAreaActivity.java	(date 1765269595842)
+@@ -1,5 +1,6 @@
+ package com.example.calorietracker;
+ 
++import android.annotation.SuppressLint;
+ import android.os.Bundle;
+ import android.widget.Button;
+ import android.widget.EditText;
+@@ -17,7 +18,7 @@
+ import java.util.ArrayList;
+ import java.util.List;
+ 
+-public class AdminPanelActivity extends AppCompatActivity {
++public class AdminAreaActivity extends AppCompatActivity {
+ 
+     RecyclerView recyclerView;
+     Button btnAddUser;
+@@ -25,13 +26,12 @@
+     UserAdapter adapter;
+     AppDatabase db;
+ 
++    @SuppressLint("MissingInflatedId")
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_area_panel);
+ 
+-        // 1. Initialize Room Database
+-        // MAKE SURE "calorietracker_db" matches the name in your AppDatabase class or LoginActivity!
+         db = Room.databaseBuilder(getApplicationContext(),
+                         AppDatabase.class, "CT_database")
+                 .allowMainThreadQueries()
+@@ -41,10 +41,7 @@
+         btnAddUser = findViewById(R.id.btnAddUser);
+         userList = new ArrayList<>();
+ 
+-        // 2. Load Data
+         loadUsers();
+-
+-        // 3. Add User Button
+         btnAddUser.setOnClickListener(v -> showAddUserDialog());
+     }
+ 
