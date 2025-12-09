@@ -1,6 +1,5 @@
 package com.example.calorietracker;
 import org.junit.Test;
-
 import static org.junit.Assert.assertTrue;
 
 public class TipsFeatureTest {
