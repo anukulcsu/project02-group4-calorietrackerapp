@@ -119,9 +119,7 @@ public class DashboardActivity extends AppCompatActivity {
                         Intent data = result.getData();
                         String foodName = data.getStringExtra("foodName");
                         int calories = data.getIntExtra("calories", 0);
-                        String time = data.getStringExtra("time");
-
-                        String entry = foodName + ": " + calories + " cal, " + time;
+                        String entry = foodName + ": " + calories + " cal";
                         foods.add(entry);
                         adapter.notifyDataSetChanged();
 
