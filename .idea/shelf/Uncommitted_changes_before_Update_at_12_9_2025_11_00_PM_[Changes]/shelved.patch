@@ -1,0 +1,51 @@
+Index: app/src/main/java/com/example/calorietracker/TipsActivity.java
+===================================================================
+diff --git a/app/src/main/java/com/example/calorietracker/TipsActivity.java b/app/src/main/java/com/example/calorietracker/TipsActivity.java
+deleted file mode 100644
+--- a/app/src/main/java/com/example/calorietracker/TipsActivity.java	(revision 6a04b6004de03514c0ea584f4c52ab5f2d2f826a)
++++ /dev/null	(revision 6a04b6004de03514c0ea584f4c52ab5f2d2f826a)
+@@ -1,44 +0,0 @@
+-package com.example.calorietracker;
+-
+-import android.os.Bundle;
+-import android.view.View;
+-import android.widget.Button;
+-import android.widget.TextView;
+-
+-import androidx.appcompat.app.AppCompatActivity;
+-
+-public class TipsActivity extends AppCompatActivity {
+-
+-    private TextView textTipsTitle;
+-    private TextView textTipsBody;
+-    private Button buttonBack;
+-
+-    @Override
+-    protected void onCreate(Bundle savedInstanceState) {
+-        super.onCreate(savedInstanceState);
+-        setContentView(R.layout.activity_tips);
+-
+-        textTipsTitle = findViewById(R.id.textTipsTitle);
+-        textTipsBody = findViewById(R.id.textTipsBody);
+-        buttonBack = findViewById(R.id.buttonBack);
+-
+-        textTipsTitle.setText("Calorie Tips");
+-
+-        // You can customize these tips however you want
+-        textTipsBody.setText(
+-                "• Under your daily limit = calorie deficit (helps with weight loss).\n\n" +
+-                        "• Over your daily limit = calorie surplus (can lead to weight gain).\n\n" +
+-                        "• Try to stay close to your target most days instead of being perfect.\n\n" +
+-                        "• Logging food regularly helps you see patterns in your eating.\n\n" +
+-                        "• Use the app's Under / Met / Over status to guide your next meal."
+-        );
+-
+-        buttonBack.setOnClickListener(new View.OnClickListener() {
+-            @Override
+-            public void onClick(View v) {
+-                // Just go back to whatever screen opened TipsActivity
+-                finish();
+-            }
+-        });
+-    }
+-}
