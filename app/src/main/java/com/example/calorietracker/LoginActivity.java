@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putInt("USER_ID",user.getUserId());
                     editor.putBoolean("IS_ADMIN",user.isAdmin());
                     editor.apply();
-                    Intent intent = new Intent(LoginActivity.this, LandingActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
