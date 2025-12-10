@@ -49,7 +49,7 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
     private ArrayAdapter<String> adapter;
     private AppDatabase db;
     private int currentUserId;
-    private static final String CHANNEL_ID = "goal_channel_popup";
+    private static final String CHANNEL_ID = "goal_channel_v3";
     private boolean isGoalNotified = false;
 
     @SuppressLint("MissingInflatedId")
@@ -73,12 +73,15 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
         foodObjects = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foodStrings);
         foodListView.setAdapter(adapter);
+
         loadUserData(loggedInUser);
         loadFoodLogs();
+
         tvQuote.setOnClickListener(v -> {
             tvQuote.setText("Loading new motivation...");
             fetchQuote();
         });
+
         if (isAdmin) {
             btnBackToAdmin.setVisibility(View.VISIBLE);
             btnBackToAdmin.setOnClickListener(v -> {
@@ -90,6 +93,7 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
         } else {
             btnBackToAdmin.setVisibility(View.GONE);
         }
+
         loggedInUser.setOnClickListener(v -> {
             new AlertDialog.Builder(DashboardActivity.this)
                     .setTitle("Sign Out")
@@ -98,6 +102,7 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.clear();
                         editor.apply();
+
                         Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
@@ -106,6 +111,7 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
                     .setNegativeButton("Cancel", null)
                     .show();
         });
+
         foodListView.setOnItemClickListener((parent, view, position, id) -> {
             FoodLog selectedItem = foodObjects.get(position);
             new AlertDialog.Builder(DashboardActivity.this)
@@ -121,10 +127,12 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
                     .setNegativeButton("No", null)
                     .show();
         });
+
         findViewById(R.id.editTarget).setOnClickListener(v -> {
             TargetFragment fragment = new TargetFragment();
             fragment.show(getSupportFragmentManager(), "TargetFragment");
         });
+
         addItemLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -137,21 +145,26 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
                     }
                 }
         );
+
         findViewById(R.id.addItem).setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, AddItemActivity.class);
             addItemLauncher.launch(intent);
         });
+
         findViewById(R.id.logCalories).setOnClickListener(v -> showDatePickerAndReset());
+
         findViewById(R.id.historyButton).setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, HistoryActivity.class);
             startActivity(intent);
         });
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         fetchQuote();
     }
+
     public static int retrieveCalories(String entry) {
         try {
             int start = entry.indexOf(":") + 2;
@@ -162,6 +175,7 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
             return -1;
         }
     }
+
     public static String getComparison(int calories, int target) {
         if (calories < target) {
             return "<";
@@ -171,12 +185,15 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
             return "=";
         }
     }
+
     private void fetchQuote() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://dummyjson.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
         QuoteApi api = retrofit.create(QuoteApi.class);
+
         api.getRandomQuote().enqueue(new Callback<Quote>() {
             @Override
             public void onResponse(Call<Quote> call, Response<Quote> response) {
@@ -184,12 +201,14 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
                     tvQuote.setText("\"" + response.body().quote + "\"\n- " + response.body().author);
                 }
             }
+
             @Override
             public void onFailure(Call<Quote> call, Throwable t) {
                 tvQuote.setText("Stay focused on your goals!");
             }
         });
     }
+
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String name = "Goal Channel";
@@ -201,6 +220,7 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
             notificationManager.createNotificationChannel(channel);
         }
     }
+
     private void sendGoalNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -208,6 +228,9 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
                 return;
             }
         }
+
+        int notificationId = (int) System.currentTimeMillis();
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle("Goal Reached! 🎉")
@@ -215,14 +238,17 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setAutoCancel(true);
+
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(1, builder.build());
+        notificationManager.notify(notificationId, builder.build());
     }
+
     private void showDatePickerAndReset() {
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
+
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 (view, year1, month1, dayOfMonth) -> {
                     String date = dayOfMonth + "/" + (month1 + 1) + "/" + year1;
@@ -230,18 +256,22 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
                 }, year, month, day);
         datePickerDialog.show();
     }
+
     private void saveHistoryAndReset(String date) {
         String currentCalsStr = calorieCountView.getText().toString();
         String targetStr = targetDisplayView.getText().toString();
         int total = currentCalsStr.isEmpty() ? 0 : Integer.parseInt(currentCalsStr);
         int target = targetStr.isEmpty() ? 0 : Integer.parseInt(targetStr);
+
         CalorieHistory history = new CalorieHistory(currentUserId, date, total, target);
         db.getCalorieHistoryDAO().insert(history);
         db.getFoodLogDAO().clearFoodsForUser(currentUserId);
+
         isGoalNotified = false;
         loadFoodLogs();
         Toast.makeText(this, "Logged for " + date + " and Resetted!", Toast.LENGTH_SHORT).show();
     }
+
     private void loadFoodLogs() {
         foodObjects.clear();
         foodStrings.clear();
@@ -256,6 +286,7 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
         calorieCountView.setText(String.valueOf(totalCal));
         updateComparison(totalCal);
     }
+
     private void updateTotalCalories() {
         int total = 0;
         for (FoodLog f : foodObjects) {
@@ -264,10 +295,12 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
         calorieCountView.setText(String.valueOf(total));
         updateComparison(total);
     }
+
     private void updateComparison(int calories) {
         String targetStr = targetDisplayView.getText().toString();
         if(targetStr.isEmpty()) return;
         int target = Integer.parseInt(targetStr);
+
         String comparison = getComparison(calories, target);
         comparisonView.setText(comparison);
 

@@ -1,4 +1,5 @@
 package com.example.calorietracker.database;
+
 import androidx.room.Database;
 import android.content.Context;
 import androidx.room.Room;
@@ -7,7 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.annotation.NonNull;
 import java.util.concurrent.Executors;
 
-@Database(entities = {User.class, FoodLog.class, CalorieHistory.class}, version = 3)
+@Database(entities = {User.class, FoodLog.class, CalorieHistory.class}, version = 5)
 public abstract class AppDatabase extends RoomDatabase {
     public static final String DBName ="CT_database";
     private static AppDatabase instance;
@@ -16,7 +17,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract FoodLogDAO getFoodLogDAO();
     public abstract CalorieHistoryDAO getCalorieHistoryDAO();
 
-    public static AppDatabase getInstance(Context context){
+    public static synchronized AppDatabase getInstance(Context context){
         if (instance == null){
             instance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DBName)
                     .allowMainThreadQueries()
