@@ -26,7 +26,9 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-
+        findViewById(R.id.btnBackHistory).setOnClickListener(v -> {
+            finish();
+        });
         db = AppDatabase.getInstance(this);
         SharedPreferences preferences = getSharedPreferences("PROJECT2_PREFS", Context.MODE_PRIVATE);
         currentUserId = preferences.getInt("USER_ID", -1);
