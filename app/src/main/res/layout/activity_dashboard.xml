@@ -170,6 +170,40 @@
 
     <Button
         android:id="@+id/logCalories"
+        <Button
+            android:id="@+id/buttonTips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Calorie Tips"
+            android:layout_marginTop="16dp"
+            tools:ignore="MissingConstraints" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:layout_width="404dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/logCalories"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#35CE16"
+            android:gravity="center"
+            android:text="Log Calories and Reset"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </RelativeLayout>
+
+
+
+    <Space
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Log Calories &amp; Reset"
