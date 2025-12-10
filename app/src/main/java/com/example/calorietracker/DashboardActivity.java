@@ -76,7 +76,6 @@ public class DashboardActivity extends AppCompatActivity {
         calorieCountView = findViewById(R.id.calorieCount);
         targetDisplayView = findViewById(R.id.targetDisplay);
         comparisonView = findViewById(R.id.comparison);
-
         int caloriesConsumed = Integer.parseInt(calorieCountView.getText().toString());
         updateComparison(caloriesConsumed);
 
