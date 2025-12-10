@@ -129,7 +129,6 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                 }
         );
-
         // Launches add item activity when add item button is pressed
         Button addItemButton = findViewById(R.id.addItem);
         addItemButton.setOnClickListener(v -> {
