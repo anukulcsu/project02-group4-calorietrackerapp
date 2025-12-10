@@ -81,11 +81,10 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
             tvQuote.setText("Loading new motivation...");
             fetchQuote();
         });
-
         if (isAdmin) {
             btnBackToAdmin.setVisibility(View.VISIBLE);
             btnBackToAdmin.setOnClickListener(v -> {
-                Intent intent = new Intent(DashboardActivity.this, LandingActivity.class);
+                Intent intent = IntentFactory.getLandingIntent(getApplicationContext());
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 finish();
@@ -103,7 +102,7 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
                         editor.clear();
                         editor.apply();
 
-                        Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+                        Intent intent = IntentFactory.getLoginIntent(DashboardActivity.this);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
@@ -116,7 +115,7 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
             FoodLog selectedItem = foodObjects.get(position);
             new AlertDialog.Builder(DashboardActivity.this)
                     .setTitle("Remove Item")
-                    .setMessage("Remove " + selectedItem.foodName + "?")
+                    .setMessage("Would you like to remove " + selectedItem.foodName + "?")
                     .setPositiveButton("Yes", (dialog, which) -> {
                         db.getFoodLogDAO().deleteFoodItem(selectedItem.id);
                         foodObjects.remove(position);
@@ -124,11 +123,11 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
                         adapter.notifyDataSetChanged();
                         updateTotalCalories();
                     })
-                    .setNegativeButton("No", null)
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                     .show();
         });
-
-        findViewById(R.id.editTarget).setOnClickListener(v -> {
+        Button editTargetButton = findViewById(R.id.editTarget);
+        editTargetButton.setOnClickListener(v -> {
             TargetFragment fragment = new TargetFragment();
             fragment.show(getSupportFragmentManager(), "TargetFragment");
         });
@@ -137,24 +136,28 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        String name = result.getData().getStringExtra("foodName");
-                        int cals = result.getData().getIntExtra("calories", 0);
-                        FoodLog newLog = new FoodLog(currentUserId, name, cals);
+                        Intent data = result.getData();
+                        String foodName = data.getStringExtra("foodName");
+                        int calories = data.getIntExtra("calories", 0);
+                        FoodLog newLog = new FoodLog(currentUserId, foodName, calories);
                         db.getFoodLogDAO().insert(newLog);
                         loadFoodLogs();
                     }
                 }
         );
 
-        findViewById(R.id.addItem).setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, AddItemActivity.class);
+        Button addItemButton = findViewById(R.id.addItem);
+        addItemButton.setOnClickListener(v -> {
+            Intent intent = IntentFactory.getAddItemIntent(DashboardActivity.this);
             addItemLauncher.launch(intent);
         });
 
-        findViewById(R.id.logCalories).setOnClickListener(v -> showDatePickerAndReset());
+        Button logCaloriesButton = findViewById(R.id.logCalories);
+        logCaloriesButton.setOnClickListener(v -> showDatePickerAndReset());
 
-        findViewById(R.id.historyButton).setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, HistoryActivity.class);
+        Button tipsButton = findViewById(R.id.historyButton);
+        tipsButton.setOnClickListener(v -> {
+            Intent intent = IntentFactory.getHistoryIntent(DashboardActivity.this);
             startActivity(intent);
         });
     }
@@ -183,6 +186,15 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
             return ">";
         } else {
             return "=";
+        }
+    }
+
+    @Override
+    public void onTargetSaved(int newTarget) {
+        targetDisplayView.setText(String.valueOf(newTarget));
+        String currentCals = calorieCountView.getText().toString();
+        if (!currentCals.isEmpty()) {
+            updateComparison(Integer.parseInt(currentCals));
         }
     }
 
@@ -317,15 +329,6 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
         if (currentUserId != -1) {
             User user = db.getUserDAO().getUserById(String.valueOf(currentUserId));
             if (user != null) view.setText("Logged in as: " + user.getUsername());
-        }
-    }
-
-    @Override
-    public void onTargetSaved(int newTarget) {
-        targetDisplayView.setText(String.valueOf(newTarget));
-        String currentCals = calorieCountView.getText().toString();
-        if (!currentCals.isEmpty()) {
-            updateComparison(Integer.parseInt(currentCals));
         }
     }
 }

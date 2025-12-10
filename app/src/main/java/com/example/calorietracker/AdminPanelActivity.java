@@ -21,30 +21,24 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 public class AdminPanelActivity extends AppCompatActivity {
-
     RecyclerView recyclerView;
     FloatingActionButton btnAddUser;
     UserAdapter adapter;
     AppDatabase db;
 
-    private static final String CHANNEL_ID = "admin_channel";
-
+    private static final String CHANNEL_ID = "admin_channel_v2";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_panel);
-
         createNotificationChannel();
-
         db = AppDatabase.getInstance(getApplicationContext());
 
         recyclerView = findViewById(R.id.recyclerView);
         btnAddUser = findViewById(R.id.btnAddUser);
-
         findViewById(R.id.btnBackToHub).setOnClickListener(v -> {
             finish();
         });
-
         adapter = new UserAdapter(this, new ArrayList<>(), db);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -120,7 +114,7 @@ public class AdminPanelActivity extends AppCompatActivity {
                     newUser.isAdmin = false;
                     db.getUserDAO().insert(newUser);
 
-                    sendNewUserNotification(uName); // Trigger notification for new user
+                    sendNewUserNotification(uName);
                     Toast.makeText(this, "User Added", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "Username already exists!", Toast.LENGTH_SHORT).show();
