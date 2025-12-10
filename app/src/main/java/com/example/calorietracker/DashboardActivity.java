@@ -1,5 +1,4 @@
 package com.example.calorietracker;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -7,11 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements TargetFragment.OnTargetSavedListener {
     private ActivityResultLauncher<Intent> addItemLauncher;
     private ListView foodListView;
     private TextView calorieCountView;
@@ -37,7 +34,6 @@ public class DashboardActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private AppDatabase db;
     private int currentUserId;
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,21 +43,19 @@ public class DashboardActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("PROJECT2_PREFS", Context.MODE_PRIVATE);
         currentUserId = preferences.getInt("USER_ID", -1);
         boolean isAdmin = preferences.getBoolean("IS_ADMIN", false);
-
         foodListView = findViewById(R.id.foodList);
         calorieCountView = findViewById(R.id.calorieCount);
         targetDisplayView = findViewById(R.id.targetDisplay);
         comparisonView = findViewById(R.id.comparison);
         TextView loggedInUser = findViewById(R.id.userLoggedIn);
         Button btnBackToAdmin = findViewById(R.id.btnBackToAdmin);
-
         foodStrings = new ArrayList<>();
         foodObjects = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foodStrings);
         foodListView.setAdapter(adapter);
-
         loadUserData(loggedInUser);
         loadFoodLogs();
+
         if (isAdmin) {
             btnBackToAdmin.setVisibility(View.VISIBLE);
             btnBackToAdmin.setOnClickListener(v -> {
@@ -73,7 +67,6 @@ public class DashboardActivity extends AppCompatActivity {
         } else {
             btnBackToAdmin.setVisibility(View.GONE);
         }
-
         loggedInUser.setOnClickListener(v -> {
             new AlertDialog.Builder(DashboardActivity.this)
                     .setTitle("Sign Out")
@@ -91,7 +84,6 @@ public class DashboardActivity extends AppCompatActivity {
                     .setNegativeButton("Cancel", null)
                     .show();
         });
-
         foodListView.setOnItemClickListener((parent, view, position, id) -> {
             FoodLog selectedItem = foodObjects.get(position);
             new AlertDialog.Builder(DashboardActivity.this)
@@ -107,23 +99,10 @@ public class DashboardActivity extends AppCompatActivity {
                     .setNegativeButton("No", null)
                     .show();
         });
-
         findViewById(R.id.editTarget).setOnClickListener(v -> {
-            EditText input = new EditText(this);
-            input.setInputType(InputType.TYPE_CLASS_NUMBER);
-            new AlertDialog.Builder(this)
-                    .setTitle("Set Calorie Target")
-                    .setView(input)
-                    .setPositiveButton("Set", (dialog, which) -> {
-                        String val = input.getText().toString();
-                        if (!val.isEmpty()) {
-                            targetDisplayView.setText(val);
-                            updateComparison(Integer.parseInt(calorieCountView.getText().toString()));
-                        }
-                    })
-                    .setNegativeButton("Cancel", null).show();
+            TargetFragment fragment = new TargetFragment();
+            fragment.show(getSupportFragmentManager(), "TargetFragment");
         });
-
         addItemLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -136,20 +115,16 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                 }
         );
-
         findViewById(R.id.addItem).setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, AddItemActivity.class);
             addItemLauncher.launch(intent);
         });
-
         findViewById(R.id.logCalories).setOnClickListener(v -> showDatePickerAndReset());
-
         findViewById(R.id.historyButton).setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, HistoryActivity.class);
             startActivity(intent);
         });
     }
-
     private void showDatePickerAndReset() {
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -163,10 +138,11 @@ public class DashboardActivity extends AppCompatActivity {
                 }, year, month, day);
         datePickerDialog.show();
     }
-
     private void saveHistoryAndReset(String date) {
-        int total = Integer.parseInt(calorieCountView.getText().toString());
-        int target = Integer.parseInt(targetDisplayView.getText().toString());
+        String currentCalsStr = calorieCountView.getText().toString();
+        String targetStr = targetDisplayView.getText().toString();
+        int total = currentCalsStr.isEmpty() ? 0 : Integer.parseInt(currentCalsStr);
+        int target = targetStr.isEmpty() ? 0 : Integer.parseInt(targetStr);
         CalorieHistory history = new CalorieHistory(currentUserId, date, total, target);
         db.getCalorieHistoryDAO().insert(history);
         db.getFoodLogDAO().clearFoodsForUser(currentUserId);
@@ -187,7 +163,6 @@ public class DashboardActivity extends AppCompatActivity {
         calorieCountView.setText(String.valueOf(totalCal));
         updateComparison(totalCal);
     }
-
     private void updateTotalCalories() {
         int total = 0;
         for (FoodLog f : foodObjects) {
@@ -208,6 +183,14 @@ public class DashboardActivity extends AppCompatActivity {
         if (currentUserId != -1) {
             User user = db.getUserDAO().getUserById(String.valueOf(currentUserId));
             if (user != null) view.setText("Logged in as: " + user.getUsername());
+        }
+    }
+    @Override
+    public void onTargetSaved(int newTarget) {
+        targetDisplayView.setText(String.valueOf(newTarget));
+        String currentCals = calorieCountView.getText().toString();
+        if (!currentCals.isEmpty()) {
+            updateComparison(Integer.parseInt(currentCals));
         }
     }
 }
