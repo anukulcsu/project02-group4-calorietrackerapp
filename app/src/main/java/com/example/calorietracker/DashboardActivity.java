@@ -201,17 +201,21 @@ public class DashboardActivity extends AppCompatActivity {
     // Compares calories consumed to target and updates summary
     private void updateComparison(int calories) {
         int target = Integer.parseInt(targetDisplayView.getText().toString());
+        comparisonView.setText(getComparison(calories, target));
+    }
+
+    static String getComparison(int calories, int target) {
         if (calories < target) {
-            comparisonView.setText("<");
+            return "<";
         } else if (calories > target) {
-            comparisonView.setText(">");
+            return ">";
         } else {
-            comparisonView.setText("=");
+            return "=";
         }
     }
 
     // Gets calories from list entry for updating total calories upon entry removal
-    private int retrieveCalories(String entry) {
+    static int retrieveCalories(String entry) {
         try {
             int start = entry.indexOf(":") + 2;
             int end = entry.indexOf(" cal");
