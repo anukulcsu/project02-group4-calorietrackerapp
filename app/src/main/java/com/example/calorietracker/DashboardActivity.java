@@ -1,56 +1,38 @@
 package com.example.calorietracker;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
+import android.text.InputType;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import com.example.calorietracker.api.Quote;
-import com.example.calorietracker.api.QuoteApi;
-import com.example.calorietracker.database.AppDatabase;
-import com.example.calorietracker.database.CalorieHistory;
-import com.example.calorietracker.database.FoodLog;
-import com.example.calorietracker.database.User;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DashboardActivity extends AppCompatActivity implements TargetFragment.OnTargetSavedListener {
+import com.example.calorietracker.database.AppDatabase;
+import com.example.calorietracker.database.User;
+import com.example.calorietracker.database.UserDAO;
+
+import java.util.ArrayList;
+
+public class DashboardActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> addItemLauncher;
     private ListView foodListView;
     private TextView calorieCountView;
     private TextView targetDisplayView;
     private TextView comparisonView;
-    private TextView tvQuote;
-    private ArrayList<String> foodStrings;
-    private ArrayList<FoodLog> foodObjects;
+    private ArrayList<String> foods;
     private ArrayAdapter<String> adapter;
-    private AppDatabase db;
-    private int currentUserId;
-    private static final String CHANNEL_ID = "goal_channel_v3";
-    private boolean isGoalNotified = false;
+    public ArrayList<String[]> history;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -93,14 +75,7 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
             btnBackToAdmin.setVisibility(View.GONE);
         }
 
-        loggedInUser.setOnClickListener(v -> {
-            new AlertDialog.Builder(DashboardActivity.this)
-                    .setTitle("Sign Out")
-                    .setMessage("Are you sure you want to log out?")
-                    .setPositiveButton("Logout", (dialog, which) -> {
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.clear();
-                        editor.apply();
+        history = new ArrayList<>();
 
                         Intent intent = IntentFactory.getLoginIntent(DashboardActivity.this);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -111,17 +86,25 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
                     .show();
         });
 
+        // Remove list entries by tapping them
         foodListView.setOnItemClickListener((parent, view, position, id) -> {
-            FoodLog selectedItem = foodObjects.get(position);
+            String selectedItem = foods.get(position);
+            String selectedItemName = selectedItem.substring(0, selectedItem.indexOf(":"));
             new AlertDialog.Builder(DashboardActivity.this)
                     .setTitle("Remove Item")
                     .setMessage("Would you like to remove " + selectedItem.foodName + "?")
                     .setPositiveButton("Yes", (dialog, which) -> {
-                        db.getFoodLogDAO().deleteFoodItem(selectedItem.id);
-                        foodObjects.remove(position);
-                        foodStrings.remove(position);
-                        adapter.notifyDataSetChanged();
-                        updateTotalCalories();
+                        int caloriesRemoved = retrieveCalories(selectedItem);
+                        if (caloriesRemoved != -1) {
+                            foods.remove(position);
+                            adapter.notifyDataSetChanged();
+                            int prevTotal = Integer.parseInt(calorieCountView.getText().toString().trim());
+                            int newTotal = prevTotal - caloriesRemoved;
+                            calorieCountView.setText(String.valueOf(newTotal));
+                            updateComparison(newTotal);
+                        } else {
+                            Toast.makeText(this, "Error removing item!", Toast.LENGTH_SHORT).show();
+                        }
                     })
                     .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                     .show();
@@ -132,6 +115,38 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
             fragment.show(getSupportFragmentManager(), "TargetFragment");
         });
 
+        int caloriesConsumed = Integer.parseInt(calorieCountView.getText().toString());
+        updateComparison(caloriesConsumed);
+
+        // Set/edit calorie target via pop-up from button
+        Button editTargetButton = findViewById(R.id.editTarget);
+        editTargetButton.setOnClickListener(v -> {
+            EditText input = new EditText(DashboardActivity.this);
+            input.setInputType(InputType.TYPE_CLASS_NUMBER);
+            new AlertDialog.Builder(DashboardActivity.this)
+                    .setTitle("Set Calorie Target")
+                    .setMessage("Enter your daily calorie target")
+                    .setView(input)
+                    .setPositiveButton("Set", (dialog, which) -> {
+                        String targetStr = input.getText().toString().trim();
+                        if (!targetStr.isEmpty()) {
+                            try {
+                                int targetInt = Integer.parseInt(targetStr);
+                                if (targetInt > 99999) {
+                                    Toast.makeText(DashboardActivity.this, "Limit is 99999!", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                targetDisplayView.setText(String.valueOf(targetInt));
+                                int calConsumed = Integer.parseInt(calorieCountView.getText().toString());
+                                updateComparison(calConsumed);
+                            } catch (NumberFormatException e) {
+                                Toast.makeText(DashboardActivity.this, "Enter valid value", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).show();
+        });
+        // Handles user-specified item properties from add item activity
         addItemLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -160,26 +175,40 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
             Intent intent = IntentFactory.getHistoryIntent(DashboardActivity.this);
             startActivity(intent);
         });
-    }
+        // 🔹 END TIPS BUTTON
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        fetchQuote();
-    }
-
-    public static int retrieveCalories(String entry) {
-        try {
-            int start = entry.indexOf(":") + 2;
-            int end = entry.indexOf(" cal");
-            String caloriesStr = entry.substring(start, end).trim();
-            return Integer.parseInt(caloriesStr);
-        } catch (Exception e) {
-            return -1;
+        TextView loggedInUser = findViewById(R.id.userLoggedIn);
+        // Display username of user currently logged in
+        SharedPreferences preferences = getSharedPreferences("PROJECT2_PREFS", Context.MODE_PRIVATE);
+        int userId = preferences.getInt("USER_ID", -1);
+        if (userId != -1) {
+            UserDAO dao = AppDatabase.getInstance(this).getUserDAO();
+            User user = dao.getUserById(String.valueOf(userId));
+            if (user != null) {
+                loggedInUser.setText("Logged in as: " + user.getUsername());
+            }
         }
+        // Allow user to sign out by clicking their username
+        loggedInUser.setOnClickListener(v -> {
+            new AlertDialog.Builder(DashboardActivity.this)
+                    .setTitle("Sign Out")
+                    .setMessage("Do you want to sign out and return to login?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                    .show();
+        });
     }
 
-    public static String getComparison(int calories, int target) {
+    // Compares calories consumed to target and updates summary
+    private void updateComparison(int calories) {
+        int target = Integer.parseInt(targetDisplayView.getText().toString());
+        comparisonView.setText(getComparison(calories, target));
+    }
+
+    static String getComparison(int calories, int target) {
         if (calories < target) {
             return "<";
         } else if (calories > target) {

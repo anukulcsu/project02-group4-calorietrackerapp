@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@color/adminBackground">
 
     <View
@@ -14,20 +13,6 @@
         android:background="@color/adminPrimary"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <ImageButton
-        android:id="@+id/btnBackToHub"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@android:drawable/ic_menu_revert"
-        app:tint="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="Back"
-        android:elevation="10dp"/>
-
     <TextView
         android:id="@+id/tvHeader"
         android:layout_width="wrap_content"
@@ -36,10 +21,10 @@
         android:textSize="26sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
-        android:layout_marginStart="16dp"
-        app:layout_constraintStart_toEndOf="@id/btnBackToHub"
-        app:layout_constraintTop_toTopOf="@id/btnBackToHub"
-        app:layout_constraintBottom_toBottomOf="@id/btnBackToHub"/>
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/tvSubHeader"
