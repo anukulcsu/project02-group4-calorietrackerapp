@@ -51,26 +51,26 @@ public class DashboardActivity extends AppCompatActivity {
 
         // Remove list entries by tapping them
         foodListView.setOnItemClickListener((parent, view, position, id) -> {
-        String selectedItem = foods.get(position);
-        String selectedItemName = selectedItem.substring(0, selectedItem.indexOf(":"));
-        new AlertDialog.Builder(DashboardActivity.this)
-                .setTitle("Remove Item")
-                .setMessage("Would you like to remove " + selectedItemName + "?")
-                .setPositiveButton("Yes", (dialog, which) -> {
-                    int caloriesRemoved = retrieveCalories(selectedItem);
-                    if (caloriesRemoved != -1) {
-                        foods.remove(position);
-                        adapter.notifyDataSetChanged();
-                        int prevTotal = Integer.parseInt(calorieCountView.getText().toString().trim());
-                        int newTotal = prevTotal - caloriesRemoved;
-                        calorieCountView.setText(String.valueOf(newTotal));
-                        updateComparison(newTotal);
-                    } else {
-                        Toast.makeText(this, "Error removing item!", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
-                .show();
+            String selectedItem = foods.get(position);
+            String selectedItemName = selectedItem.substring(0, selectedItem.indexOf(":"));
+            new AlertDialog.Builder(DashboardActivity.this)
+                    .setTitle("Remove Item")
+                    .setMessage("Would you like to remove " + selectedItemName + "?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        int caloriesRemoved = retrieveCalories(selectedItem);
+                        if (caloriesRemoved != -1) {
+                            foods.remove(position);
+                            adapter.notifyDataSetChanged();
+                            int prevTotal = Integer.parseInt(calorieCountView.getText().toString().trim());
+                            int newTotal = prevTotal - caloriesRemoved;
+                            calorieCountView.setText(String.valueOf(newTotal));
+                            updateComparison(newTotal);
+                        } else {
+                            Toast.makeText(this, "Error removing item!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                    .show();
         });
 
         // Compare calories consumed to target
@@ -79,7 +79,6 @@ public class DashboardActivity extends AppCompatActivity {
         comparisonView = findViewById(R.id.comparison);
 
         int caloriesConsumed = Integer.parseInt(calorieCountView.getText().toString());
-
         updateComparison(caloriesConsumed);
 
         // Set/edit calorie target via pop-up from button
@@ -171,6 +170,14 @@ public class DashboardActivity extends AppCompatActivity {
                     .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).show();
         });
 
+        // 🔹 TIPS BUTTON: open TipsActivity
+        Button tipsButton = findViewById(R.id.buttonTips);
+        tipsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(DashboardActivity.this, TipsActivity.class);
+            startActivity(intent);
+        });
+        // 🔹 END TIPS BUTTON
+
         TextView loggedInUser = findViewById(R.id.userLoggedIn);
         // Display username of user currently logged in
         SharedPreferences preferences = getSharedPreferences("PROJECT2_PREFS", Context.MODE_PRIVATE);
@@ -194,8 +201,6 @@ public class DashboardActivity extends AppCompatActivity {
                     .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                     .show();
         });
-
-
     }
 
     // Compares calories consumed to target and updates summary
@@ -221,5 +226,4 @@ public class DashboardActivity extends AppCompatActivity {
             return -1;
         }
     }
-
 }
