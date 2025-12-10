@@ -39,14 +39,52 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        createNotificationChannel();
+        db = AppDatabase.getInstance(this);
+        SharedPreferences preferences = getSharedPreferences("PROJECT2_PREFS", Context.MODE_PRIVATE);
+        currentUserId = preferences.getInt("USER_ID", -1);
+        boolean isAdmin = preferences.getBoolean("IS_ADMIN", false);
+        foodListView = findViewById(R.id.foodList);
+        calorieCountView = findViewById(R.id.calorieCount);
+        targetDisplayView = findViewById(R.id.targetDisplay);
+        comparisonView = findViewById(R.id.comparison);
+        TextView loggedInUser = findViewById(R.id.userLoggedIn);
+        Button btnBackToAdmin = findViewById(R.id.btnBackToAdmin);
+        tvQuote = findViewById(R.id.tvQuote);
+        foodStrings = new ArrayList<>();
+        foodObjects = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foodStrings);
+        foodListView.setAdapter(adapter);
+
+        loadUserData(loggedInUser);
+        loadFoodLogs();
+
+        tvQuote.setOnClickListener(v -> {
+            tvQuote.setText("Loading new motivation...");
+            fetchQuote();
+        });
+        if (isAdmin) {
+            btnBackToAdmin.setVisibility(View.VISIBLE);
+            btnBackToAdmin.setOnClickListener(v -> {
+                Intent intent = IntentFactory.getLandingIntent(getApplicationContext());
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+            });
+        } else {
+            btnBackToAdmin.setVisibility(View.GONE);
+        }
 
         history = new ArrayList<>();
 
-        // Create list of foods
-        foodListView = findViewById(R.id.foodList);
-        foods = new ArrayList<>(); // Empty by default, items will be supplied by the user
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foods);
-        foodListView.setAdapter(adapter);
+                        Intent intent = IntentFactory.getLoginIntent(DashboardActivity.this);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
 
         // Remove list entries by tapping them
         foodListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -54,7 +92,7 @@ public class DashboardActivity extends AppCompatActivity {
             String selectedItemName = selectedItem.substring(0, selectedItem.indexOf(":"));
             new AlertDialog.Builder(DashboardActivity.this)
                     .setTitle("Remove Item")
-                    .setMessage("Would you like to remove " + selectedItemName + "?")
+                    .setMessage("Would you like to remove " + selectedItem.foodName + "?")
                     .setPositiveButton("Yes", (dialog, which) -> {
                         int caloriesRemoved = retrieveCalories(selectedItem);
                         if (caloriesRemoved != -1) {
@@ -71,11 +109,11 @@ public class DashboardActivity extends AppCompatActivity {
                     .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                     .show();
         });
-
-        // Compare calories consumed to target
-        calorieCountView = findViewById(R.id.calorieCount);
-        targetDisplayView = findViewById(R.id.targetDisplay);
-        comparisonView = findViewById(R.id.comparison);
+        Button editTargetButton = findViewById(R.id.editTarget);
+        editTargetButton.setOnClickListener(v -> {
+            TargetFragment fragment = new TargetFragment();
+            fragment.show(getSupportFragmentManager(), "TargetFragment");
+        });
 
         int caloriesConsumed = Integer.parseInt(calorieCountView.getText().toString());
         updateComparison(caloriesConsumed);
@@ -116,61 +154,25 @@ public class DashboardActivity extends AppCompatActivity {
                         Intent data = result.getData();
                         String foodName = data.getStringExtra("foodName");
                         int calories = data.getIntExtra("calories", 0);
-                        String entry = foodName + ": " + calories + " cal";
-                        foods.add(entry);
-                        adapter.notifyDataSetChanged();
-
-                        int prevTotal = Integer.parseInt(calorieCountView.getText().toString().trim());
-                        int newTotal = prevTotal + calories;
-                        calorieCountView.setText(String.valueOf(newTotal));
-
-                        updateComparison(newTotal);
+                        FoodLog newLog = new FoodLog(currentUserId, foodName, calories);
+                        db.getFoodLogDAO().insert(newLog);
+                        loadFoodLogs();
                     }
                 }
         );
-        // Launches add item activity when add item button is pressed
+
         Button addItemButton = findViewById(R.id.addItem);
         addItemButton.setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, AddItemActivity.class);
+            Intent intent = IntentFactory.getAddItemIntent(DashboardActivity.this);
             addItemLauncher.launch(intent);
         });
 
-        // Saves user-specified date, target calories, and calories consumed to history ArrayList for retrieval
         Button logCaloriesButton = findViewById(R.id.logCalories);
-        logCaloriesButton.setOnClickListener(v -> {
-            EditText input = new EditText(DashboardActivity.this);
-            input.setInputType(InputType.TYPE_CLASS_TEXT);
-            new AlertDialog.Builder(DashboardActivity.this)
-                    .setTitle("Log Today's Calories and Target\nThis will CLEAR your items!")
-                    .setMessage("Enter the date:")
-                    .setView(input)
-                    .setPositiveButton("Log & Reset", (dialog, which) -> {
-                        String date = input.getText().toString().trim();
-                        if (!date.isEmpty()) {
-                            if (date.length() < 5 || date.length() > 10) { // Validate date input
-                                Toast.makeText(DashboardActivity.this, "Invalid date!", Toast.LENGTH_SHORT).show();
-                            } else {
-                                // Date, target, calories consumed
-                                String[] historyEntry = new String[]{date, targetDisplayView.getText().toString(), calorieCountView.getText().toString()};
-                                history.add(historyEntry);
-                                foods.clear(); // Clear logged foods
-                                adapter.notifyDataSetChanged();
-                                calorieCountView.setText("0"); // Reset calorie count
-                                int newCalories = Integer.parseInt(calorieCountView.getText().toString());
-                                updateComparison(newCalories);
-                                Toast.makeText(DashboardActivity.this, "Success!", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(DashboardActivity.this, "Date is a required field!", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).show();
-        });
+        logCaloriesButton.setOnClickListener(v -> showDatePickerAndReset());
 
-        // 🔹 TIPS BUTTON: open TipsActivity
-        Button tipsButton = findViewById(R.id.buttonTips);
+        Button tipsButton = findViewById(R.id.historyButton);
         tipsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, TipsActivity.class);
+            Intent intent = IntentFactory.getHistoryIntent(DashboardActivity.this);
             startActivity(intent);
         });
         // 🔹 END TIPS BUTTON
@@ -215,15 +217,147 @@ public class DashboardActivity extends AppCompatActivity {
             return "=";
         }
     }
-    // Gets calories from list entry for updating total calories upon entry removal
-    static int retrieveCalories(String entry) {
-        try {
-            int start = entry.indexOf(":") + 2;
-            int end = entry.indexOf(" cal");
-            String caloriesStr = entry.substring(start, end).trim();
-            return Integer.parseInt(caloriesStr);
-        } catch (Exception e) {
-            return -1;
+
+    @Override
+    public void onTargetSaved(int newTarget) {
+        targetDisplayView.setText(String.valueOf(newTarget));
+        String currentCals = calorieCountView.getText().toString();
+        if (!currentCals.isEmpty()) {
+            updateComparison(Integer.parseInt(currentCals));
+        }
+    }
+
+    private void fetchQuote() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://dummyjson.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        QuoteApi api = retrofit.create(QuoteApi.class);
+
+        api.getRandomQuote().enqueue(new Callback<Quote>() {
+            @Override
+            public void onResponse(Call<Quote> call, Response<Quote> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    tvQuote.setText("\"" + response.body().quote + "\"\n- " + response.body().author);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Quote> call, Throwable t) {
+                tvQuote.setText("Stay focused on your goals!");
+            }
+        });
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String name = "Goal Channel";
+            String description = "Channel for calorie goals";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void sendGoalNotification() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 101);
+                return;
+            }
+        }
+
+        int notificationId = (int) System.currentTimeMillis();
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setContentTitle("Goal Reached! 🎉")
+                .setContentText("Good job! You have hit your calorie target.")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(notificationId, builder.build());
+    }
+
+    private void showDatePickerAndReset() {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, year1, month1, dayOfMonth) -> {
+                    String date = dayOfMonth + "/" + (month1 + 1) + "/" + year1;
+                    saveHistoryAndReset(date);
+                }, year, month, day);
+        datePickerDialog.show();
+    }
+
+    private void saveHistoryAndReset(String date) {
+        String currentCalsStr = calorieCountView.getText().toString();
+        String targetStr = targetDisplayView.getText().toString();
+        int total = currentCalsStr.isEmpty() ? 0 : Integer.parseInt(currentCalsStr);
+        int target = targetStr.isEmpty() ? 0 : Integer.parseInt(targetStr);
+
+        CalorieHistory history = new CalorieHistory(currentUserId, date, total, target);
+        db.getCalorieHistoryDAO().insert(history);
+        db.getFoodLogDAO().clearFoodsForUser(currentUserId);
+
+        isGoalNotified = false;
+        loadFoodLogs();
+        Toast.makeText(this, "Logged for " + date + " and Resetted!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void loadFoodLogs() {
+        foodObjects.clear();
+        foodStrings.clear();
+        List<FoodLog> dbList = db.getFoodLogDAO().getFoodsForUser(currentUserId);
+        int totalCal = 0;
+        for (FoodLog f : dbList) {
+            foodObjects.add(f);
+            foodStrings.add(f.foodName + ": " + f.calories + " cal");
+            totalCal += f.calories;
+        }
+        adapter.notifyDataSetChanged();
+        calorieCountView.setText(String.valueOf(totalCal));
+        updateComparison(totalCal);
+    }
+
+    private void updateTotalCalories() {
+        int total = 0;
+        for (FoodLog f : foodObjects) {
+            total += f.calories;
+        }
+        calorieCountView.setText(String.valueOf(total));
+        updateComparison(total);
+    }
+
+    private void updateComparison(int calories) {
+        String targetStr = targetDisplayView.getText().toString();
+        if(targetStr.isEmpty()) return;
+        int target = Integer.parseInt(targetStr);
+
+        String comparison = getComparison(calories, target);
+        comparisonView.setText(comparison);
+
+        if (calories >= target && !isGoalNotified) {
+            sendGoalNotification();
+            isGoalNotified = true;
+        }
+        if (calories < target) {
+            isGoalNotified = false;
+        }
+    }
+
+    private void loadUserData(TextView view) {
+        if (currentUserId != -1) {
+            User user = db.getUserDAO().getUserById(String.valueOf(currentUserId));
+            if (user != null) view.setText("Logged in as: " + user.getUsername());
         }
     }
 }

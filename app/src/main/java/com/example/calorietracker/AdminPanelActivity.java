@@ -18,28 +18,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminPanelActivity extends AppCompatActivity {
-
     RecyclerView recyclerView;
     FloatingActionButton btnAddUser;
     List<User> userList;
     UserAdapter adapter;
     AppDatabase db;
 
+    private static final String CHANNEL_ID = "admin_channel_v2";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_panel);
-
-        db = Room.databaseBuilder(getApplicationContext(),
-                        AppDatabase.class, "CT_database")
-                .allowMainThreadQueries()
-                .build();
+        createNotificationChannel();
+        db = AppDatabase.getInstance(getApplicationContext());
 
         recyclerView = findViewById(R.id.recyclerView);
         btnAddUser = findViewById(R.id.btnAddUser);
+        findViewById(R.id.btnBackToHub).setOnClickListener(v -> {
+            finish();
+        });
+        adapter = new UserAdapter(this, new ArrayList<>(), db);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        userList = new ArrayList<>();
-        loadUsers();
+        db.getUserDAO().getAllUsers().observe(this, users -> {
+            adapter.setUsers(users);
+        });
+
         btnAddUser.setOnClickListener(v -> showAddUserDialog());
     }
 
@@ -67,17 +72,22 @@ public class AdminPanelActivity extends AppCompatActivity {
         layout.addView(inputPass);
         builder.setView(layout);
         builder.setPositiveButton("Create", (dialog, which) -> {
-            String Name = inputUser.getText().toString();
-            String Pass = inputPass.getText().toString();
+            String uName = inputUser.getText().toString();
+            String uPass = inputPass.getText().toString();
 
-            if (!Name.isEmpty() && !Pass.isEmpty()) {
-                User newUser = new User();
-                newUser.username = Name;
-                newUser.password = Pass;
-                newUser.isAdmin = false;
-                db.getUserDAO().insert(newUser);
-                Toast.makeText(this, "User Added", Toast.LENGTH_SHORT).show();
-                loadUsers();
+            if (!uName.isEmpty() && !uPass.isEmpty()) {
+                if (db.getUserDAO().getUserByUsername(uName) == null) {
+                    User newUser = new User();
+                    newUser.username = uName;
+                    newUser.password = uPass;
+                    newUser.isAdmin = false;
+                    db.getUserDAO().insert(newUser);
+
+                    sendNewUserNotification(uName);
+                    Toast.makeText(this, "User Added", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Username already exists!", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             }
