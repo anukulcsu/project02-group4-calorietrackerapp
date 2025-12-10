@@ -1,5 +1,5 @@
 package com.example.calorietracker;
-import android.annotation.SuppressLint;
+
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,41 +19,30 @@ public class AdminPanelActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     FloatingActionButton btnAddUser;
-    List<User> userList;
     UserAdapter adapter;
     AppDatabase db;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_panel);
+
         db = AppDatabase.getInstance(getApplicationContext());
 
         recyclerView = findViewById(R.id.recyclerView);
         btnAddUser = findViewById(R.id.btnAddUser);
-
-        findViewById(R.id.btnBackToHub).setOnClickListener(v -> {
-            finish();
-        });
-
-        userList = new ArrayList<>();
-        loadUsers();
-
-        btnAddUser.setOnClickListener(v -> showAddUserDialog());
-    }
-
-    private void loadUsers() {
-        userList = db.getUserDAO().getAllUsers();
-        adapter = new UserAdapter(this, userList, db);
+        findViewById(R.id.btnBackToHub).setOnClickListener(v -> finish());
+        adapter = new UserAdapter(this, new ArrayList<>(), db);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        db.getUserDAO().getAllUsers().observe(this, users -> {
+            adapter.setUsers(users);
+        });
+        btnAddUser.setOnClickListener(v -> showAddUserDialog());
     }
-
     private void showAddUserDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add New User");
-
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(50, 40, 50, 10);
@@ -65,28 +54,25 @@ public class AdminPanelActivity extends AppCompatActivity {
         final EditText inputPass = new EditText(this);
         inputPass.setHint("Password");
         layout.addView(inputPass);
-
         builder.setView(layout);
-
         builder.setPositiveButton("Create", (dialog, which) -> {
-            String Name = inputUser.getText().toString();
-            String Pass = inputPass.getText().toString();
-
-            if (!Name.isEmpty() && !Pass.isEmpty()) {
-                User newUser = new User();
-                newUser.username = Name;
-                newUser.password = Pass;
-                newUser.isAdmin = false;
-
-                db.getUserDAO().insert(newUser);
-
-                Toast.makeText(this, "User Added", Toast.LENGTH_SHORT).show();
-                loadUsers();
+            String uName = inputUser.getText().toString();
+            String uPass = inputPass.getText().toString();
+            if (!uName.isEmpty() && !uPass.isEmpty()) {
+                if (db.getUserDAO().getUserByUsername(uName) == null) {
+                    User newUser = new User();
+                    newUser.username = uName;
+                    newUser.password = uPass;
+                    newUser.isAdmin = false;
+                    db.getUserDAO().insert(newUser);
+                    Toast.makeText(this, "User Added", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Username exists!", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Fill all fields", Toast.LENGTH_SHORT).show();
             }
         });
-
         builder.setNegativeButton("Cancel", null);
         builder.show();
     }
