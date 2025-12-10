@@ -71,7 +71,6 @@ public class DashboardActivity extends AppCompatActivity {
                     .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                     .show();
         });
-
         // Compare calories consumed to target
         calorieCountView = findViewById(R.id.calorieCount);
         targetDisplayView = findViewById(R.id.targetDisplay);
@@ -108,7 +107,6 @@ public class DashboardActivity extends AppCompatActivity {
                     })
                     .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).show();
         });
-
         // Handles user-specified item properties from add item activity
         addItemLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
