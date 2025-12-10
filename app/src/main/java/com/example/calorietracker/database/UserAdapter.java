@@ -21,11 +21,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
     Context context;
     List<User> userList;
     AppDatabase db;
-
-    public void setUsers(List<User> newUsers) {
-        this.userList = newUsers;
-        notifyDataSetChanged();
-    }
     public UserAdapter(Context context, List<User> userList, AppDatabase db) {
         this.context = context;
         this.userList = userList;
@@ -44,6 +39,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
         User currentUser = userList.get(position);
         holder.tvUsername.setText(currentUser.username);
 
+        //delete logic
         holder.btnDelete.setOnClickListener(v -> {
             new AlertDialog.Builder(context)
                     .setTitle("Delete User")
@@ -59,6 +55,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
                     .show();
         });
 
+        //update logic
         holder.btnEdit.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("Update User");
@@ -102,9 +99,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
     public int getItemCount() {
         return userList.size();
     }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvUsername;
         ImageButton btnEdit, btnDelete;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvUsername = itemView.findViewById(R.id.tvUsername);
