@@ -1,24 +1,35 @@
 package com.example.calorietracker;
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import com.example.calorietracker.database.AppDatabase;
 import com.example.calorietracker.database.CalorieHistory;
 import com.example.calorietracker.database.FoodLog;
 import com.example.calorietracker.database.User;
+import com.example.calorietracker.database.UserDAO;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -34,11 +45,17 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
     private ArrayAdapter<String> adapter;
     private AppDatabase db;
     private int currentUserId;
+    private static final String CHANNEL_ID = "goal_channel";
+    private boolean isGoalNotified = false;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        createNotificationChannel();
+
         db = AppDatabase.getInstance(this);
         SharedPreferences preferences = getSharedPreferences("PROJECT2_PREFS", Context.MODE_PRIVATE);
         currentUserId = preferences.getInt("USER_ID", -1);
@@ -49,10 +66,12 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
         comparisonView = findViewById(R.id.comparison);
         TextView loggedInUser = findViewById(R.id.userLoggedIn);
         Button btnBackToAdmin = findViewById(R.id.btnBackToAdmin);
+
         foodStrings = new ArrayList<>();
         foodObjects = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foodStrings);
         foodListView.setAdapter(adapter);
+
         loadUserData(loggedInUser);
         loadFoodLogs();
 
@@ -67,6 +86,7 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
         } else {
             btnBackToAdmin.setVisibility(View.GONE);
         }
+
         loggedInUser.setOnClickListener(v -> {
             new AlertDialog.Builder(DashboardActivity.this)
                     .setTitle("Sign Out")
@@ -84,6 +104,7 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
                     .setNegativeButton("Cancel", null)
                     .show();
         });
+
         foodListView.setOnItemClickListener((parent, view, position, id) -> {
             FoodLog selectedItem = foodObjects.get(position);
             new AlertDialog.Builder(DashboardActivity.this)
@@ -125,6 +146,36 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
             startActivity(intent);
         });
     }
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String newChannelId = "goal_channel_popup";
+            CharSequence name = "Goal Channel";
+            String description = "Channel for calorie goals";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(newChannelId, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void sendGoalNotification() {
+        String newChannelId = "goal_channel_popup";
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, newChannelId)
+                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setContentTitle("Goal Reached! 🎉")
+                .setContentText("Good job! You have hit your calorie target for today.")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        notificationManager.notify(1, builder.build());
+    }
+
     private void showDatePickerAndReset() {
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -146,9 +197,11 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
         CalorieHistory history = new CalorieHistory(currentUserId, date, total, target);
         db.getCalorieHistoryDAO().insert(history);
         db.getFoodLogDAO().clearFoodsForUser(currentUserId);
+        isGoalNotified = false;
         loadFoodLogs();
         Toast.makeText(this, "Logged for " + date + " and Resetted!", Toast.LENGTH_SHORT).show();
     }
+
     private void loadFoodLogs() {
         foodObjects.clear();
         foodStrings.clear();
@@ -175,16 +228,26 @@ public class DashboardActivity extends AppCompatActivity implements TargetFragme
         String targetStr = targetDisplayView.getText().toString();
         if(targetStr.isEmpty()) return;
         int target = Integer.parseInt(targetStr);
+
         if (calories < target) comparisonView.setText("<");
         else if (calories > target) comparisonView.setText(">");
         else comparisonView.setText("=");
+        if (calories >= target && !isGoalNotified) {
+            sendGoalNotification();
+            isGoalNotified = true;
+        }
+        if (calories < target) {
+            isGoalNotified = false;
+        }
     }
+
     private void loadUserData(TextView view) {
         if (currentUserId != -1) {
             User user = db.getUserDAO().getUserById(String.valueOf(currentUserId));
             if (user != null) view.setText("Logged in as: " + user.getUsername());
         }
     }
+
     @Override
     public void onTargetSaved(int newTarget) {
         targetDisplayView.setText(String.valueOf(newTarget));
