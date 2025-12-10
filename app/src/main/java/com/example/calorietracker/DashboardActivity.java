@@ -41,7 +41,6 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         history = new ArrayList<>();
-
         // Create list of foods
         foodListView = findViewById(R.id.foodList);
         foods = new ArrayList<>(); // Empty by default, items will be supplied by the user
