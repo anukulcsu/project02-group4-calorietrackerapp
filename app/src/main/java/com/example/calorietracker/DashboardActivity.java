@@ -71,6 +71,7 @@ public class DashboardActivity extends AppCompatActivity {
                     .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                     .show();
         });
+
         // Compare calories consumed to target
         calorieCountView = findViewById(R.id.calorieCount);
         targetDisplayView = findViewById(R.id.targetDisplay);
