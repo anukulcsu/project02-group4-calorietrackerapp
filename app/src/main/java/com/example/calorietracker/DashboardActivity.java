@@ -25,7 +25,6 @@ import com.example.calorietracker.database.UserDAO;
 import java.util.ArrayList;
 
 public class DashboardActivity extends AppCompatActivity {
-
     private ActivityResultLauncher<Intent> addItemLauncher;
     private ListView foodListView;
     private TextView calorieCountView;
