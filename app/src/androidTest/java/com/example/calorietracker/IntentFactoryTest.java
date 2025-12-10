@@ -1,4 +1,5 @@
 package com.example.calorietracker;
+
 import android.content.Context;
 import android.content.Intent;
 import androidx.test.core.app.ApplicationProvider;
@@ -10,11 +11,6 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class IntentFactoryTest {
     private Context context = ApplicationProvider.getApplicationContext();
-    private IntentFactoryTest() {
-    }
-    public static IntentFactoryTest createIntentFactoryTest() {
-        return new IntentFactoryTest();
-    }
     @Test
     public void testLoginIntent() {
         Intent intent = IntentFactory.getLoginIntent(context);
