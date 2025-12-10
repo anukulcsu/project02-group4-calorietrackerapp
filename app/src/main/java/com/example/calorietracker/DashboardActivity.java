@@ -33,6 +33,7 @@ public class DashboardActivity extends AppCompatActivity {
     private ArrayList<String> foods;
     private ArrayAdapter<String> adapter;
     public ArrayList<String[]> history;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
