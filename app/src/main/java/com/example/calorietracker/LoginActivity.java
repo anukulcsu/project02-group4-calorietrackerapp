@@ -18,6 +18,7 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     TextView signupLink;
     UserDAO dao;
+    //login page
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,10 +36,11 @@ public class LoginActivity extends AppCompatActivity {
                 String password=passwordField.getText().toString();
                 User user = dao.getUserByUsername(username);
                 if (user != null && user.getPassword().equals(password)) {
-                    SharedPreferences preferences = getSharedPreferences("PROJECT2_PREFS", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putInt("USER_ID", user.getUserId());
-                    editor.putBoolean("IS_ADMIN", user.isAdmin());
+                    SharedPreferences preferences=getSharedPreferences("PROJECT2_PREFS", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor=preferences.edit();
+                    editor.putString("USERNAME",user.getUsername());
+                    editor.putInt("USER_ID",user.getUserId());
+                    editor.putBoolean("IS_ADMIN",user.isAdmin());
                     editor.apply();
                     Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                     startActivity(intent);

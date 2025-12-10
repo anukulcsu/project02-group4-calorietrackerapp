@@ -1,6 +1,7 @@
 package com.example.calorietracker.database;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "users")
@@ -12,6 +13,11 @@ public class User {
     public String password;
     public boolean isAdmin;
 
+    public User(){
+
+    }
+
+    @Ignore
     public User(String username, String password, boolean isAdmin) {
         this.username = username;
         this.password = password;
