@@ -213,7 +213,6 @@ public class DashboardActivity extends AppCompatActivity {
             comparisonView.setText("=");
         }
     }
-
     // Gets calories from list entry for updating total calories upon entry removal
     private int retrieveCalories(String entry) {
         try {
