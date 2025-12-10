@@ -29,7 +29,7 @@ public abstract class AppDatabase extends RoomDatabase {
                             Executors.newSingleThreadExecutor().execute(() -> {
                                 UserDAO dao = getInstance(context).getUserDAO();
                                 if (dao.getUserByUsername("admin2") == null) {
-                                    dao.insert(new User("admin2", "admin2", true));
+                                    dao.insert(new User("admin2", "admin2", true)); // admin info
                                 }
 
                                 if (dao.getUserByUsername("testuser1") == null) {
