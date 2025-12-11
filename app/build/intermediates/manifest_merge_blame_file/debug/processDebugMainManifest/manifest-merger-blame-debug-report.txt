@@ -1,0 +1,285 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.calorietracker"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="36" />
+10
+11    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+11-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:5:5-76
+11-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:5:22-74
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:6:5-66
+12-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:6:22-64
+13
+14    <!-- Although the *SdkVersion is captured in gradle build files, this is required for non gradle builds -->
+15    <!-- <uses-sdk android:minSdkVersion="21" /> -->
+16    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+16-->[com.google.firebase:firebase-firestore:26.0.2] C:\Users\Anukul\.gradle\caches\8.13\transforms\13dd7e01e3c33e47583a0e97dfc25cb6\transformed\firebase-firestore-26.0.2\AndroidManifest.xml:10:5-79
+16-->[com.google.firebase:firebase-firestore:26.0.2] C:\Users\Anukul\.gradle\caches\8.13\transforms\13dd7e01e3c33e47583a0e97dfc25cb6\transformed\firebase-firestore-26.0.2\AndroidManifest.xml:10:22-76
+17    <uses-permission android:name="android.permission.REORDER_TASKS" />
+17-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:24:5-72
+17-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:24:22-69
+18
+19    <permission
+19-->[androidx.core:core:1.16.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\0fca4ffe8fe0b8584a64bac2f2e14446\transformed\core-1.16.0\AndroidManifest.xml:22:5-24:47
+20        android:name="com.example.calorietracker.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+20-->[androidx.core:core:1.16.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\0fca4ffe8fe0b8584a64bac2f2e14446\transformed\core-1.16.0\AndroidManifest.xml:23:9-81
+21        android:protectionLevel="signature" />
+21-->[androidx.core:core:1.16.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\0fca4ffe8fe0b8584a64bac2f2e14446\transformed\core-1.16.0\AndroidManifest.xml:24:9-44
+22
+23    <uses-permission android:name="com.example.calorietracker.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+23-->[androidx.core:core:1.16.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\0fca4ffe8fe0b8584a64bac2f2e14446\transformed\core-1.16.0\AndroidManifest.xml:26:5-97
+23-->[androidx.core:core:1.16.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\0fca4ffe8fe0b8584a64bac2f2e14446\transformed\core-1.16.0\AndroidManifest.xml:26:22-94
+24
+25    <application
+25-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:8:5-36:19
+26        android:allowBackup="true"
+26-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:9:9-35
+27        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+27-->[androidx.core:core:1.16.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\0fca4ffe8fe0b8584a64bac2f2e14446\transformed\core-1.16.0\AndroidManifest.xml:28:18-86
+28        android:dataExtractionRules="@xml/data_extraction_rules"
+28-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:10:9-65
+29        android:debuggable="true"
+30        android:extractNativeLibs="false"
+31        android:fullBackupContent="@xml/backup_rules"
+31-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:11:9-54
+32        android:icon="@mipmap/ic_launcher"
+32-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:12:9-43
+33        android:label="@string/app_name"
+33-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:13:9-41
+34        android:roundIcon="@mipmap/ic_launcher_round"
+34-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:14:9-54
+35        android:supportsRtl="true"
+35-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:15:9-35
+36        android:testOnly="true"
+37        android:theme="@style/Theme.CalorieTracker" >
+37-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:16:9-52
+38        <activity
+38-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:18:9-25:20
+39            android:name="com.example.calorietracker.MainActivity"
+39-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:19:13-41
+40            android:exported="true" >
+40-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:20:13-36
+41            <intent-filter>
+41-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:21:13-24:29
+42                <action android:name="android.intent.action.MAIN" />
+42-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:22:17-68
+42-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:22:25-66
+43
+44                <category android:name="android.intent.category.LAUNCHER" />
+44-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:23:17-76
+44-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:23:27-74
+45            </intent-filter>
+46        </activity>
+47        <activity android:name="com.example.calorietracker.LoginActivity" />
+47-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:27:9-50
+47-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:27:19-48
+48        <activity android:name="com.example.calorietracker.SignUpActivity" />
+48-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:28:9-51
+48-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:28:19-49
+49        <activity android:name="com.example.calorietracker.LandingActivity" />
+49-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:29:9-52
+49-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:29:19-50
+50        <activity android:name="com.example.calorietracker.DashboardActivity" />
+50-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:30:9-54
+50-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:30:19-52
+51        <activity android:name="com.example.calorietracker.AdminPanelActivity" />
+51-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:31:9-55
+51-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:31:19-53
+52        <activity android:name="com.example.calorietracker.HistoryActivity" />
+52-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:32:9-52
+52-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:32:19-50
+53        <activity android:name="com.example.calorietracker.AddItemActivity" />
+53-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:33:9-52
+53-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:33:19-50
+54        <activity android:name="com.example.calorietracker.SettingsActivity" />
+54-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:34:9-53
+54-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:34:19-51
+55
+56        <service
+56-->[com.google.firebase:firebase-firestore:26.0.2] C:\Users\Anukul\.gradle\caches\8.13\transforms\13dd7e01e3c33e47583a0e97dfc25cb6\transformed\firebase-firestore-26.0.2\AndroidManifest.xml:14:9-23:19
+57            android:name="com.google.firebase.components.ComponentDiscoveryService"
+57-->[com.google.firebase:firebase-firestore:26.0.2] C:\Users\Anukul\.gradle\caches\8.13\transforms\13dd7e01e3c33e47583a0e97dfc25cb6\transformed\firebase-firestore-26.0.2\AndroidManifest.xml:15:13-84
+58            android:directBootAware="true"
+58-->[com.google.firebase:firebase-common:22.0.1] C:\Users\Anukul\.gradle\caches\8.13\transforms\882e33896745fb782c93c2fc5239a625\transformed\firebase-common-22.0.1\AndroidManifest.xml:32:13-43
+59            android:exported="false" >
+59-->[com.google.firebase:firebase-firestore:26.0.2] C:\Users\Anukul\.gradle\caches\8.13\transforms\13dd7e01e3c33e47583a0e97dfc25cb6\transformed\firebase-firestore-26.0.2\AndroidManifest.xml:16:13-37
+60            <meta-data
+60-->[com.google.firebase:firebase-firestore:26.0.2] C:\Users\Anukul\.gradle\caches\8.13\transforms\13dd7e01e3c33e47583a0e97dfc25cb6\transformed\firebase-firestore-26.0.2\AndroidManifest.xml:17:13-19:85
+61                android:name="com.google.firebase.components:com.google.firebase.firestore.FirebaseFirestoreKtxRegistrar"
+61-->[com.google.firebase:firebase-firestore:26.0.2] C:\Users\Anukul\.gradle\caches\8.13\transforms\13dd7e01e3c33e47583a0e97dfc25cb6\transformed\firebase-firestore-26.0.2\AndroidManifest.xml:18:17-122
+62                android:value="com.google.firebase.components.ComponentRegistrar" />
+62-->[com.google.firebase:firebase-firestore:26.0.2] C:\Users\Anukul\.gradle\caches\8.13\transforms\13dd7e01e3c33e47583a0e97dfc25cb6\transformed\firebase-firestore-26.0.2\AndroidManifest.xml:19:17-82
+63            <meta-data
+63-->[com.google.firebase:firebase-firestore:26.0.2] C:\Users\Anukul\.gradle\caches\8.13\transforms\13dd7e01e3c33e47583a0e97dfc25cb6\transformed\firebase-firestore-26.0.2\AndroidManifest.xml:20:13-22:85
+64                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+64-->[com.google.firebase:firebase-firestore:26.0.2] C:\Users\Anukul\.gradle\caches\8.13\transforms\13dd7e01e3c33e47583a0e97dfc25cb6\transformed\firebase-firestore-26.0.2\AndroidManifest.xml:21:17-111
+65                android:value="com.google.firebase.components.ComponentRegistrar" />
+65-->[com.google.firebase:firebase-firestore:26.0.2] C:\Users\Anukul\.gradle\caches\8.13\transforms\13dd7e01e3c33e47583a0e97dfc25cb6\transformed\firebase-firestore-26.0.2\AndroidManifest.xml:22:17-82
+66            <meta-data
+66-->[com.google.firebase:firebase-common:22.0.1] C:\Users\Anukul\.gradle\caches\8.13\transforms\882e33896745fb782c93c2fc5239a625\transformed\firebase-common-22.0.1\AndroidManifest.xml:35:13-37:85
+67                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+67-->[com.google.firebase:firebase-common:22.0.1] C:\Users\Anukul\.gradle\caches\8.13\transforms\882e33896745fb782c93c2fc5239a625\transformed\firebase-common-22.0.1\AndroidManifest.xml:36:17-109
+68                android:value="com.google.firebase.components.ComponentRegistrar" />
+68-->[com.google.firebase:firebase-common:22.0.1] C:\Users\Anukul\.gradle\caches\8.13\transforms\882e33896745fb782c93c2fc5239a625\transformed\firebase-common-22.0.1\AndroidManifest.xml:37:17-82
+69        </service>
+70
+71        <activity
+71-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\2d9a3df702625b4f6051bb4250e70b2d\transformed\play-services-base-18.1.0\AndroidManifest.xml:20:9-22:45
+72            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+72-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\2d9a3df702625b4f6051bb4250e70b2d\transformed\play-services-base-18.1.0\AndroidManifest.xml:20:19-85
+73            android:exported="false"
+73-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\2d9a3df702625b4f6051bb4250e70b2d\transformed\play-services-base-18.1.0\AndroidManifest.xml:22:19-43
+74            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+74-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\2d9a3df702625b4f6051bb4250e70b2d\transformed\play-services-base-18.1.0\AndroidManifest.xml:21:19-78
+75
+76        <provider
+76-->[com.google.firebase:firebase-common:22.0.1] C:\Users\Anukul\.gradle\caches\8.13\transforms\882e33896745fb782c93c2fc5239a625\transformed\firebase-common-22.0.1\AndroidManifest.xml:23:9-28:39
+77            android:name="com.google.firebase.provider.FirebaseInitProvider"
+77-->[com.google.firebase:firebase-common:22.0.1] C:\Users\Anukul\.gradle\caches\8.13\transforms\882e33896745fb782c93c2fc5239a625\transformed\firebase-common-22.0.1\AndroidManifest.xml:24:13-77
+78            android:authorities="com.example.calorietracker.firebaseinitprovider"
+78-->[com.google.firebase:firebase-common:22.0.1] C:\Users\Anukul\.gradle\caches\8.13\transforms\882e33896745fb782c93c2fc5239a625\transformed\firebase-common-22.0.1\AndroidManifest.xml:25:13-72
+79            android:directBootAware="true"
+79-->[com.google.firebase:firebase-common:22.0.1] C:\Users\Anukul\.gradle\caches\8.13\transforms\882e33896745fb782c93c2fc5239a625\transformed\firebase-common-22.0.1\AndroidManifest.xml:26:13-43
+80            android:exported="false"
+80-->[com.google.firebase:firebase-common:22.0.1] C:\Users\Anukul\.gradle\caches\8.13\transforms\882e33896745fb782c93c2fc5239a625\transformed\firebase-common-22.0.1\AndroidManifest.xml:27:13-37
+81            android:initOrder="100" />
+81-->[com.google.firebase:firebase-common:22.0.1] C:\Users\Anukul\.gradle\caches\8.13\transforms\882e33896745fb782c93c2fc5239a625\transformed\firebase-common-22.0.1\AndroidManifest.xml:28:13-36
+82
+83        <activity
+83-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:27:9-34:20
+84            android:name="androidx.test.core.app.InstrumentationActivityInvoker$BootstrapActivity"
+84-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:28:13-99
+85            android:exported="true"
+85-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:29:13-36
+86            android:theme="@style/WhiteBackgroundTheme" >
+86-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:30:13-56
+87            <intent-filter android:priority="-100" >
+87-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:31:13-33:29
+87-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:31:28-51
+88                <category android:name="android.intent.category.LAUNCHER" />
+88-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:23:17-76
+88-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:23:27-74
+89            </intent-filter>
+90        </activity>
+91        <activity
+91-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:35:9-42:20
+92            android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity"
+92-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:36:13-95
+93            android:exported="true"
+93-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:37:13-36
+94            android:theme="@style/WhiteBackgroundTheme" >
+94-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:38:13-56
+95            <intent-filter android:priority="-100" >
+95-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:31:13-33:29
+95-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:31:28-51
+96                <category android:name="android.intent.category.LAUNCHER" />
+96-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:23:17-76
+96-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:23:27-74
+97            </intent-filter>
+98        </activity>
+99        <activity
+99-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:43:9-50:20
+100            android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyFloatingActivity"
+100-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:44:13-103
+101            android:exported="true"
+101-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:45:13-36
+102            android:theme="@style/WhiteBackgroundDialogTheme" >
+102-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:46:13-62
+103            <intent-filter android:priority="-100" >
+103-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:31:13-33:29
+103-->[androidx.test:core:1.7.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\9a9aa5419e4d91358fabf7ebc18b7654\transformed\core-1.7.0\AndroidManifest.xml:31:28-51
+104                <category android:name="android.intent.category.LAUNCHER" />
+104-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:23:17-76
+104-->C:\CSUMB\Sem 1\CST-338-Software Design\Android\New folder\app\src\main\AndroidManifest.xml:23:27-74
+105            </intent-filter>
+106        </activity>
+107
+108        <provider
+108-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\64f593677d4e0ae2652d8f755db49680\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+109            android:name="androidx.startup.InitializationProvider"
+109-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\64f593677d4e0ae2652d8f755db49680\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+110            android:authorities="com.example.calorietracker.androidx-startup"
+110-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\64f593677d4e0ae2652d8f755db49680\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+111            android:exported="false" >
+111-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\64f593677d4e0ae2652d8f755db49680\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+112            <meta-data
+112-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\64f593677d4e0ae2652d8f755db49680\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+113                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+113-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\64f593677d4e0ae2652d8f755db49680\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+114                android:value="androidx.startup" />
+114-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\64f593677d4e0ae2652d8f755db49680\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+115            <meta-data
+115-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Anukul\.gradle\caches\8.13\transforms\c89fed44162e9382369f1d0aa720fa4e\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
+116                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+116-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Anukul\.gradle\caches\8.13\transforms\c89fed44162e9382369f1d0aa720fa4e\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
+117                android:value="androidx.startup" />
+117-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\Anukul\.gradle\caches\8.13\transforms\c89fed44162e9382369f1d0aa720fa4e\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
+118            <meta-data
+118-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:29:13-31:52
+119                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+119-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:30:17-85
+120                android:value="androidx.startup" />
+120-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:31:17-49
+121        </provider>
+122
+123        <receiver
+123-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:34:9-52:20
+124            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+124-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:35:13-76
+125            android:directBootAware="false"
+125-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:36:13-44
+126            android:enabled="true"
+126-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:37:13-35
+127            android:exported="true"
+127-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:38:13-36
+128            android:permission="android.permission.DUMP" >
+128-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:39:13-57
+129            <intent-filter>
+129-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:40:13-42:29
+130                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+130-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:17-91
+130-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:25-88
+131            </intent-filter>
+132            <intent-filter>
+132-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:43:13-45:29
+133                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+133-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:17-85
+133-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:25-82
+134            </intent-filter>
+135            <intent-filter>
+135-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:46:13-48:29
+136                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+136-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:17-88
+136-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:25-85
+137            </intent-filter>
+138            <intent-filter>
+138-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:49:13-51:29
+139                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+139-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:17-95
+139-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\ba90d241c21e95698c1c85694f637cb5\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:25-92
+140            </intent-filter>
+141        </receiver>
+142
+143        <service
+143-->[androidx.room:room-runtime-android:2.8.4] C:\Users\Anukul\.gradle\caches\8.13\transforms\828edf2743380e20be4c8a8b1e3a606a\transformed\room-runtime\AndroidManifest.xml:24:9-28:63
+144            android:name="androidx.room.MultiInstanceInvalidationService"
+144-->[androidx.room:room-runtime-android:2.8.4] C:\Users\Anukul\.gradle\caches\8.13\transforms\828edf2743380e20be4c8a8b1e3a606a\transformed\room-runtime\AndroidManifest.xml:25:13-74
+145            android:directBootAware="true"
+145-->[androidx.room:room-runtime-android:2.8.4] C:\Users\Anukul\.gradle\caches\8.13\transforms\828edf2743380e20be4c8a8b1e3a606a\transformed\room-runtime\AndroidManifest.xml:26:13-43
+146            android:exported="false" />
+146-->[androidx.room:room-runtime-android:2.8.4] C:\Users\Anukul\.gradle\caches\8.13\transforms\828edf2743380e20be4c8a8b1e3a606a\transformed\room-runtime\AndroidManifest.xml:27:13-37
+147
+148        <meta-data
+148-->[com.google.android.gms:play-services-basement:18.8.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\6a184c73acd4a98a626cba456115f13f\transformed\play-services-basement-18.8.0\AndroidManifest.xml:21:9-23:69
+149            android:name="com.google.android.gms.version"
+149-->[com.google.android.gms:play-services-basement:18.8.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\6a184c73acd4a98a626cba456115f13f\transformed\play-services-basement-18.8.0\AndroidManifest.xml:22:13-58
+150            android:value="@integer/google_play_services_version" />
+150-->[com.google.android.gms:play-services-basement:18.8.0] C:\Users\Anukul\.gradle\caches\8.13\transforms\6a184c73acd4a98a626cba456115f13f\transformed\play-services-basement-18.8.0\AndroidManifest.xml:23:13-66
+151    </application>
+152
+153</manifest>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="adminBackground">#F2F5F8</color>
+    <color name="adminPrimary">#2563EB</color>
+    <color name="adminSurface">#FFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="iconDelete">#EF4444</color>
+    <color name="iconEdit">#10B981</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#3700B3</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
+    <color name="textPrimary">#1E293B</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="app_name">Calorie Tracker</string>
+    <style name="Base.Theme.CalorieTracker" parent="Theme.Material3.DayNight.NoActionBar">
+        
+        
+    </style>
+    <style name="Theme.CalorieTracker" parent="Base.Theme.CalorieTracker"/>
+</resources>

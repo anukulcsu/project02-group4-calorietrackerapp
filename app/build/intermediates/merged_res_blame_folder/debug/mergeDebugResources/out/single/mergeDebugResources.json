@@ -1,0 +1,118 @@
+[
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.calorietracker.app-main-6:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/layout_activity_dashboard.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/layout/activity_dashboard.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/layout_activity_landing.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/layout/activity_landing.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/drawable_blue_button.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/drawable/blue_button.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/layout_activity_add_item.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/layout/activity_add_item.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.example.calorietracker.app-main-6:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/layout_activity_admin_panel.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/layout/activity_admin_panel.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/layout_activity_history.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/layout/activity_history.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/xml_backup_rules.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.calorietracker.app-main-6:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/layout_activity_main.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/layout_activity_tips.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/layout/activity_tips.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.calorietracker.app-main-6:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/layout_item_user.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/layout/item_user.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.example.calorietracker.app-main-6:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.calorietracker.app-main-6:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.calorietracker.app-main-6:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/layout_activity_login.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/layout/activity_login.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.calorietracker.app-main-6:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.example.calorietracker.app-main-6:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.calorietracker.app-main-6:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/layout_fragment_edit_target.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/layout/fragment_edit_target.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/layout_activity_signup.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/layout/activity_signup.xml"
+    },
+    {
+        "merged": "com.example.calorietracker.app-debug-4:/drawable_input_box.xml.flat",
+        "source": "com.example.calorietracker.app-main-6:/drawable/input_box.xml"
+    }
+]
